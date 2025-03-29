@@ -9,7 +9,7 @@ body {
     color: var(--text-main);
 }
 
-.outer-container {
+.nav-page-container {
     display: flex;
     height: 100vh;
 }
