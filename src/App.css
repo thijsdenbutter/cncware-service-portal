@@ -4,31 +4,12 @@
     box-sizing: border-box;
 }
 
-:root {
-  /* Background colors */
-  --bg-main: #1a1d2b;             /* main background */
-  --bg-panel: #2c2f3e;            /* panels (like login box, chat area) */
-  --bg-sidebar: #3c3f4f;          /* sidebar or top nav background */
-
-  /* Primary action color */
-  --primary: #00c6c6;             /* buttons and highlights */
-
-  /* Text colors */
-  --text-main: #ffffff;           /* main text */
-  --text-muted: #bbbbbb;          /* secondary or placeholder text */
-
-  /* Input fields */
-  --input-bg: #2a2d3a;
-  --input-border: #555555;
-  --input-focus: #00c6c6;
-
-  /* Card / box styling */
-  --card-bg: #3c3f4f;
-  --card-border: #555555;
-
-  /* Status colors */
-  --success: #00b894;
-  --warning: #fdcb6e;
-  --error: #d63031;
+body {
+    background: var(--bg-main);
+    color: var(--text-main);
 }
 
+.outer-container {
+    display: flex;
+    height: 100vh;
+}
