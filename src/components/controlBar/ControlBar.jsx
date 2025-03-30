@@ -1,5 +1,6 @@
 import './ControlBar.css'
 import {NavLink} from "react-router-dom";
+import Button from "../button/Button.jsx";
 
 function ControlBar() {
     return (
@@ -10,7 +11,7 @@ function ControlBar() {
             </div>
             <div className="control-bar-inner-container">
                 <NavLink to="/new-chat">New chat</NavLink>
-                <button>Stop</button>
+                <Button/>
             </div>
         </div>
     )
