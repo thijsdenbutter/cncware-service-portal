@@ -2,6 +2,7 @@ import './ControlBar.css'
 import {NavLink} from "react-router-dom";
 import Button from "../button/Button.jsx";
 import {useEffect, useRef, useState} from "react";
+import Divider from "../divider/Divider.jsx";
 
 function ControlBar() {
     const [seconds, setSeconds] = useState(0);
@@ -45,12 +46,12 @@ function ControlBar() {
             </div>
             <div className="control-bar-inner-container">
                 <NavLink to="/new-chat">New chat</NavLink>
-                <span className="divider-vertical"/>
+                <Divider direction="vertical"/>
                 <span className="timer-display">{formatTime()}</span>
                 <Button caption="Register"/>
                 <Button caption="Stop" onClick={stopTimer}/>
                 <Button caption="Start" onClick={startTimer}/>
-                <span className="divider-vertical"/>
+                <Divider direction="vertical"/>
             </div>
         </div>
     )

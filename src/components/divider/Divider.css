@@ -1,0 +1,11 @@
+.divider-vertical {
+    width: 1px;
+    align-self: stretch;
+    background-color: var(--bg-main);
+}
+
+.divider-horizontal {
+    height: 1px;
+    align-self: stretch;
+    background-color: var(--bg-main);
+}

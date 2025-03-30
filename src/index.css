@@ -54,12 +54,6 @@ ul {
     list-style: none;
 }
 
-.divider-vertical {
-    width: 1px;
-    align-self: stretch;
-    background-color: var(--bg-main);
-}
-
 a {
     position: relative;
     color: var(--text-main);
