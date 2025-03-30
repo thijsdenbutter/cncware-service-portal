@@ -23,6 +23,7 @@ function ControlBar() {
     return (
         <div className="control-bar-outer-container">
             <div className="control-bar-inner-container">
+
             </div>
             <div className="control-bar-inner-container">
                 <NavLink to="/new-chat">New chat</NavLink>
