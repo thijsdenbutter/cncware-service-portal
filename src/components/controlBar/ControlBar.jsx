@@ -1,8 +1,11 @@
-import './ControleBar.css'
+import './ControlBar.css'
 
-function ControleBar() {
+function ControlBar() {
     return (
-        <div>ControleBar</div>
+        <div className="control-bar-outer-container">
+            <button>button1</button>
+            <button>button2</button>
+        </div>
     )
 }
-export default ControleBar;
+export default ControlBar;

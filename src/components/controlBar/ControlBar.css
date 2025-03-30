@@ -1,0 +1,4 @@
+.control-bar-outer-container {
+    display: flex;
+    background-color: var(--bg-sidebar);
+}
