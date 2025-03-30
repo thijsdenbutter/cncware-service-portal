@@ -45,10 +45,11 @@ function ControlBar() {
             </div>
             <div className="control-bar-inner-container">
                 <NavLink to="/new-chat">New chat</NavLink>
+                <span className="divider-vertical"/>
                 <span className="timer-display">{formatTime()}</span>
                 <Button caption="Register"/>
                 <Button caption="Stop" onClick={stopTimer}/>
-                <Button caption="Start" onClick={startTimer} />
+                <Button caption="Start" onClick={startTimer}/>
                 <span className="divider-vertical"/>
             </div>
         </div>
