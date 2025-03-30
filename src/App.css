@@ -9,7 +9,15 @@ body {
     color: var(--text-main);
 }
 
-.outer-container {
+.app-outer-container {
+    height: 100vh;
     display: flex;
+    gap: 5px;
+    flex-direction: column;
+}
+
+.app-inner-container {
+    display: flex;
+    justify-content: flex-start;
     height: 100vh;
 }

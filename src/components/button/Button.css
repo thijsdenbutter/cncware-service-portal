@@ -1,0 +1,37 @@
+.button-default {
+    position: relative;
+    color: var(--text-main);
+    font-weight: var(--font-weight-medium);
+    font-size: 1rem;
+    background-color: var(--primary-default);
+    border: none;
+    outline: none;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+.button-default::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 6px;
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.button-default:hover::after {
+    opacity: 1;
+    transform: scaleX(80%);
+}
+
+.button-default:focus::after,
+.button-default:active::after {
+    opacity: 1;
+    transform: scaleX(80%);
+}
