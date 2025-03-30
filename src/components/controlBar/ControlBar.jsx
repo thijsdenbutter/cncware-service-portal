@@ -3,42 +3,21 @@ import {NavLink} from "react-router-dom";
 import Button from "../button/Button.jsx";
 import {useEffect, useRef, useState} from "react";
 import Divider from "../divider/Divider.jsx";
+import StartButton from "../start-button/StartButton.jsx";
+import StopButton from "../stop-button/StopButton.jsx";
+import Timer from "../timer/Timer.jsx";
 
 function ControlBar() {
     const [seconds, setSeconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const intervalRef = useRef(null);
 
-    const startTimer = () => {
-        if (intervalRef.current !== null) return; // er loopt al een timer
-
-        intervalRef.current = setInterval(() => {
-            setSeconds(prev => prev + 1);
-        }, 1000);
-
-        setIsRunning(true);
-    };
-
-    const stopTimer = () => {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-        setIsRunning(false);
-    };
-
     useEffect(() => {
-        return () => clearInterval(intervalRef.current);
+        const interval = intervalRef.current;
+        return () => {
+            clearInterval(interval);
+        };
     }, []);
-
-    useEffect(() => {
-        console.log(seconds);
-    }, [seconds]);
-
-    const formatTime = () => {
-        const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
-        const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
-        const secs = String(seconds % 60).padStart(2, '0');
-        return `${hrs}:${mins}:${secs}`;
-    };
 
     return (
         <div className="control-bar-outer-container">
@@ -47,10 +26,10 @@ function ControlBar() {
             <div className="control-bar-inner-container">
                 <NavLink to="/new-chat">New chat</NavLink>
                 <Divider direction="vertical"/>
-                <span className="timer-display">{formatTime()}</span>
+                <Timer seconds={seconds}/>
                 <Button caption="Register"/>
-                <Button caption="Stop" onClick={stopTimer}/>
-                <Button caption="Start" onClick={startTimer}/>
+                <StopButton setIsRunning={setIsRunning} intervalRef={intervalRef}/>
+                <StartButton intervalRef={intervalRef} setIsRunning={setIsRunning} setSeconds={setSeconds}/>
                 <Divider direction="vertical"/>
             </div>
         </div>
