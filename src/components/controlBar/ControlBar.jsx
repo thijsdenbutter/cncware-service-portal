@@ -1,12 +1,12 @@
 import './ControlBar.css'
 import {NavLink} from "react-router-dom";
-import Button from "../button/Button.jsx";
 import {useEffect, useRef, useState} from "react";
 import Divider from "../divider/Divider.jsx";
 import ButtonStart from "../button-start/ButtonStart.jsx";
 import ButtonStop from "../button-stop/ButtonStop.jsx";
 import Timer from "../timer/Timer.jsx";
 import ButtonRegister from "../button-register/ButtonRegister.jsx";
+import FilterCostumer from "../filter-costumer/FilterCostumer.jsx";
 
 function ControlBar() {
     const [seconds, setSeconds] = useState(0);
@@ -23,7 +23,7 @@ function ControlBar() {
     return (
         <div className="control-bar-outer-container">
             <div className="control-bar-inner-container">
-
+                <FilterCostumer/>
             </div>
             <div className="control-bar-inner-container">
                 <NavLink to="/new-chat">New chat</NavLink>

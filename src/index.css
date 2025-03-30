@@ -27,6 +27,7 @@ html {
     /* Text colors */
     --text-main: #ffffff; /* main text */
     --text-muted: #bbbbbb; /* secondary or placeholder text */
+    --text-filter: #1a1d2b; /* filter text */
 
     /* Input fields */
     --input-bg: #2a2d3a;
