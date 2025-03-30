@@ -49,6 +49,7 @@ function ControlBar() {
                 <Button caption="Register"/>
                 <Button caption="Stop" onClick={stopTimer}/>
                 <Button caption="Start" onClick={startTimer} />
+                <span className="divider-vertical"/>
             </div>
         </div>
     )
