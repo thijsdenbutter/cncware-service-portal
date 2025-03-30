@@ -2,13 +2,13 @@
     background-color: var(--input-bg);
     color: var(--text-muted);
     border: 1px solid var(--input-border);
-    border-radius: 8px;
+    border-radius: 0.5rem;
     padding: 0.5rem 0.75rem;
-    font-size: 1rem;
+    font-size: var(--font-size-base);
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    height: 42px;
-    min-width: 160px;
+    height: 2.5rem;
+    min-width: 10rem;
 }
 
 .filter-input:focus {
