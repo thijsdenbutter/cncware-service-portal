@@ -7,6 +7,15 @@
     padding: 1rem;
 }
 
+.timer-display {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--bg-main);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
 .control-bar-inner-container {
     display: flex;
     flex-direction: row;

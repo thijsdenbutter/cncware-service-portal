@@ -1,8 +1,13 @@
 import './Button.css'
 
-function Button() {
+function Button({caption, onClick}) {
     return (
-        <button>button</button>
+        <button
+            className="button-default"
+            onClick={onClick}
+        >
+            {caption}
+        </button>
     )
 }
 export default Button
