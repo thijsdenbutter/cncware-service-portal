@@ -6,6 +6,7 @@ import Divider from "../divider/Divider.jsx";
 import ButtonStart from "../button-start/ButtonStart.jsx";
 import ButtonStop from "../button-stop/ButtonStop.jsx";
 import Timer from "../timer/Timer.jsx";
+import ButtonRegister from "../button-register/ButtonRegister.jsx";
 
 function ControlBar() {
     const [seconds, setSeconds] = useState(0);
@@ -27,7 +28,7 @@ function ControlBar() {
                 <NavLink to="/new-chat">New chat</NavLink>
                 <Divider direction="vertical"/>
                 <Timer seconds={seconds}/>
-                <Button caption="Register"/>
+                <ButtonRegister intervalRef={intervalRef} setIsRunning={setIsRunning} isRunning={isRunning} setSeconds={setSeconds}/>
                 <ButtonStop setIsRunning={setIsRunning} intervalRef={intervalRef}/>
                 <ButtonStart intervalRef={intervalRef} setIsRunning={setIsRunning} setSeconds={setSeconds}/>
                 <Divider direction="vertical"/>
