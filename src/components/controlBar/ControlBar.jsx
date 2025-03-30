@@ -7,6 +7,7 @@ import ButtonStop from "../button-stop/ButtonStop.jsx";
 import Timer from "../timer/Timer.jsx";
 import ButtonRegister from "../button-register/ButtonRegister.jsx";
 import FilterCostumer from "../filter-costumer/FilterCostumer.jsx";
+import FilterStatus from "../filter-status/FilterStatus.jsx";
 
 function ControlBar() {
     const [seconds, setSeconds] = useState(0);
@@ -24,6 +25,7 @@ function ControlBar() {
         <div className="control-bar-outer-container">
             <div className="control-bar-inner-container">
                 <FilterCostumer/>
+                <FilterStatus/>
             </div>
             <div className="control-bar-inner-container">
                 <NavLink to="/new-chat">New chat</NavLink>
