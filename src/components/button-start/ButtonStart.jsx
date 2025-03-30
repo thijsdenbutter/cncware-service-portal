@@ -1,7 +1,6 @@
 import Button from "../button/Button.jsx";
 
-
-function StartButton({intervalRef, setSeconds, setIsRunning}) {
+function ButtonStart({intervalRef, setSeconds, setIsRunning}) {
 
     const startTimer = () => {
         if (intervalRef.current !== null) return;
@@ -17,4 +16,5 @@ function StartButton({intervalRef, setSeconds, setIsRunning}) {
         <Button caption="Start" onClick={startTimer}/>
     );
 }
-export default StartButton
+
+export default ButtonStart

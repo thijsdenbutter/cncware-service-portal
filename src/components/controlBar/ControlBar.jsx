@@ -3,8 +3,8 @@ import {NavLink} from "react-router-dom";
 import Button from "../button/Button.jsx";
 import {useEffect, useRef, useState} from "react";
 import Divider from "../divider/Divider.jsx";
-import StartButton from "../start-button/StartButton.jsx";
-import StopButton from "../stop-button/StopButton.jsx";
+import ButtonStart from "../button-start/ButtonStart.jsx";
+import ButtonStop from "../button-stop/ButtonStop.jsx";
 import Timer from "../timer/Timer.jsx";
 
 function ControlBar() {
@@ -28,8 +28,8 @@ function ControlBar() {
                 <Divider direction="vertical"/>
                 <Timer seconds={seconds}/>
                 <Button caption="Register"/>
-                <StopButton setIsRunning={setIsRunning} intervalRef={intervalRef}/>
-                <StartButton intervalRef={intervalRef} setIsRunning={setIsRunning} setSeconds={setSeconds}/>
+                <ButtonStop setIsRunning={setIsRunning} intervalRef={intervalRef}/>
+                <ButtonStart intervalRef={intervalRef} setIsRunning={setIsRunning} setSeconds={setSeconds}/>
                 <Divider direction="vertical"/>
             </div>
         </div>

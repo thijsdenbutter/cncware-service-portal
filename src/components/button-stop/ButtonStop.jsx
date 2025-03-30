@@ -1,6 +1,6 @@
 import Button from "../button/Button.jsx";
 
-function StopButton({intervalRef, setIsRunning}) {
+function ButtonStop({intervalRef, setIsRunning}) {
 
     const stopTimer = () => {
         clearInterval(intervalRef.current);
@@ -12,4 +12,4 @@ function StopButton({intervalRef, setIsRunning}) {
         <Button caption="Stop" onClick={stopTimer}/>
     );
 }
-export default StopButton
+export default ButtonStop
