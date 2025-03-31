@@ -28,7 +28,7 @@ function ControlBar() {
                 <FilterStatus/>
             </div>
             <div className="control-bar-inner-container">
-                <NavLink to="/new-chat">New chat</NavLink>
+                <NavLink to="/nieuwe-chat">Nieuwe chat</NavLink>
                 <Divider direction="vertical"/>
                 <Timer seconds={seconds}/>
                 <ButtonRegister intervalRef={intervalRef} setIsRunning={setIsRunning} isRunning={isRunning} setSeconds={setSeconds}/>
