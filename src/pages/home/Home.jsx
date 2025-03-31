@@ -1,5 +1,6 @@
 import NavBar from "../../components/navBar/NavBar.jsx";
 import './Home.css'
+import InfoRow from "../../components/info-row/InfoRow.jsx";
 
 function Home() {
     const dummyCompanies = [
@@ -48,18 +49,21 @@ function Home() {
     return (
         <div className="home-layout">
             <div className="tile-costumer">
-                <h2>Company name</h2>
-                <p>{dummyCompanies[0].name}</p>
-                <h3>Costumer name</h3>
-                <p>{dummyCompanies[0].contact.first_name + " " + dummyCompanies[0].contact.last_name}</p>
+                <InfoRow label="Bedrijfsnaam" value={dummyCompanies[0].name} />
+                <InfoRow label="Contact" value={dummyCompanies[0].contact.first_name + " " + dummyCompanies[0].contact.last_name} />
                 <div className="tile-quanity-wrapper">
+                    Tickets
                     <div className="tile-quantity">
                         <h4>open</h4>
                         <p>4</p>
                     </div>
                     <div className="tile-quantity">
-                        <h4>closed</h4>
+                        <h4>Gesloten</h4>
                         <p>6</p>
+                    </div>
+                    <div className="tile-quantity">
+                        <h4>Minuten</h4>
+                        <p>600</p>
                     </div>
                 </div>
             </div>
