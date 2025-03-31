@@ -6,13 +6,13 @@ function NavBar() {
         <nav className="nav-bar">
             <ul>
                 <li>
-                    <NavLink to="/">Customers</NavLink>
+                    <NavLink to="/">Klanten</NavLink>
                 </li>
                 <li>
                     <NavLink to="/chats">Chats</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/products">Products</NavLink>
+                    <NavLink to="/products">Producten</NavLink>
                 </li>
             </ul>
         </nav>

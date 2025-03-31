@@ -7,7 +7,7 @@ function FilterCostumer() {
 
     return (
         <Filter
-            placeholder="costumer"
+            placeholder="Filter op klant"
             value={filterCostumer}
             onChange={(e) => {
                 setFilterCostumer(e.target.value)

@@ -7,7 +7,7 @@ function FilterStatus() {
 
     return (
         <Filter
-            placeholder="status"
+            placeholder="Filter op status"
             value={filterStatus}
             onChange={(e) => {
                 setFilterStatus(e.target.value)
