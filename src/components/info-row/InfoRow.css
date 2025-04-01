@@ -1,0 +1,17 @@
+.info-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-value {
+    background-color: var(--input-bg);
+    color: var(--text-main);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.75rem;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-base);
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

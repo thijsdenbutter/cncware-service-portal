@@ -1,0 +1,11 @@
+.stat-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}

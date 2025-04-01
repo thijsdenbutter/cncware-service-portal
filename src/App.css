@@ -19,5 +19,5 @@ body {
 .app-inner-container {
     display: flex;
     justify-content: flex-start;
-    height: 100vh;
+    flex: 1;
 }
