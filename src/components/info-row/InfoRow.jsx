@@ -3,7 +3,7 @@ import './InfoRow.css'
 function InfoRow({label, value}) {
     return (
         <div className='info-row'>
-            <p className="info-label">{label}</p>
+            <p>{label}</p>
             <p className="info-value">{value}</p>
         </div>
     )
