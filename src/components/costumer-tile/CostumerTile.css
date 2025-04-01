@@ -1,5 +1,7 @@
 .costumer-tile {
     display: flex;
+    height: auto;
+    align-self: flex-start;
     flex-direction: column;
     gap: 0.5rem;
     background-color: var(--card-bg);
