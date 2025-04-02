@@ -19,7 +19,7 @@ function App() {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/chats" element={<Chats/>}/>
                     <Route path="/login" element={<Login/>}/>
-                    <Route path="/new-chat" element={<NewChat/>}/>
+                    <Route path="/nieuwe-chat" element={<NewChat/>}/>
                     <Route path="*" element={<PageNotFound/>}/>
                 </Routes>
             </div>
