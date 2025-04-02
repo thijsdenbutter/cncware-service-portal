@@ -14,3 +14,18 @@
     border-top-left-radius: 0.1rem;
     padding: 1rem;
 }
+
+.chat {
+    cursor: pointer;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--input-bg);
+    color: var(--text-muted);
+    border: 1px solid var(--input-border);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat.selected {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 2px rgba(0, 198, 198, 0.3);
+}

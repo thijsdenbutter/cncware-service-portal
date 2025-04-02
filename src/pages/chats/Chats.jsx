@@ -1,8 +1,11 @@
 import './Chats.css'
+import {useEffect, useState} from 'react'
 import InfoRow from "../../components/info-row/InfoRow.jsx";
 import Divider from "../../components/divider/Divider.jsx";
 
 function Chats() {
+    const [selectedChatId, setSelectedChatId] = useState(null);
+
     const dummyTickets = [
         {
             id: "ticket-001",
@@ -73,14 +76,18 @@ function Chats() {
             ]
         }
     ];
-
+    useEffect(() => {
+        console.log(selectedChatId);
+    }, [selectedChatId]);
 
     return (
         <div className="chats-layout">
             <div className="chats-bar">
                     {dummyTickets.map((ticket) => {
+                        const isSelected = selectedChatId === ticket.id;
                         return (
-                            <div key={ticket.id} className="chat">
+                            <div key={ticket.id} className={`chat ${isSelected ? "selected" : ""}`}
+                                 onClick={() => {setSelectedChatId(ticket.id)}}>
                                 <InfoRow label="Bedrijf" value={ticket.company.name}/>
                                 <InfoRow label="Onderwerp" value={ticket.subject}/>
                                 <Divider direction="horizontal"/>
