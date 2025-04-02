@@ -1,5 +1,6 @@
 import './Chats.css'
 import InfoRow from "../../components/info-row/InfoRow.jsx";
+import Divider from "../../components/divider/Divider.jsx";
 
 function Chats() {
     const dummyTickets = [
@@ -82,6 +83,7 @@ function Chats() {
                             <div key={ticket.id} className="chat">
                                 <InfoRow label="Bedrijf" value={ticket.company.name}/>
                                 <InfoRow label="Onderwerp" value={ticket.subject}/>
+                                <Divider direction="horizontal"/>
                             </div>
                         )
                     })}
