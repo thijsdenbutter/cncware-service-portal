@@ -9,3 +9,7 @@
     height: 2.5rem;
     min-width: 10rem;
 }
+
+.filter-input.placeholder-active {
+    color: var(--text-muted);
+}
