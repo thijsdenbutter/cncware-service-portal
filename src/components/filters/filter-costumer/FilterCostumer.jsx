@@ -1,4 +1,4 @@
-import Filter from "../Filter/Filter.jsx";
+import Filter from "../filter/Filter.jsx";
 import {useContext} from "react";
 import {FilterContext} from "../../../context/FilterContext.jsx";
 
