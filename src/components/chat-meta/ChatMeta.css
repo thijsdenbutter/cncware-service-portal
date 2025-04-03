@@ -1,0 +1,20 @@
+.chat-meta {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.25rem;
+}
+
+.chat-meta-label {
+    font-size: var(--font-size-sm);
+    color: var(--text-muted);
+    margin-bottom: 0.1rem;
+}
+
+.chat-meta-value {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-main);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -1,0 +1,12 @@
+.chats-bar {
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: var(--bg-sidebar);
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+    border-top-right-radius: 0.1rem;
+    border-top-left-radius: 0.1rem;
+    padding: 1rem;
+    overflow-y: auto;
+}
