@@ -5,8 +5,8 @@ import Chats from "./pages/chats/Chats.jsx";
 import NewChat from "./pages/newChat/NewChat.jsx";
 import Login from "./pages/login/Login.jsx";
 import PageNotFound from "./pages/pageNotFound/PageNotFound.jsx";
-import NavBar from "./components/navBar/NavBar.jsx";
-import ControlBar from "./components/controlBar/ControlBar.jsx";
+import NavBar from "./components/nav-bar/NavBar.jsx";
+import ControlBar from "./components/control-bar/ControlBar.jsx";
 
 function App() {
 

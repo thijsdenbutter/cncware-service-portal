@@ -1,5 +1,5 @@
 import './Chats.css'
-import ChatBar from "../../components/chat-bar/ChatBar.jsx";
+import ChatBar from "../../components/chats/chat-bar/ChatBar.jsx";
 
 function Chats() {
     return (

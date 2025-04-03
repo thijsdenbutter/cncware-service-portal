@@ -1,6 +1,6 @@
 import Filter from "../Filter/Filter.jsx";
 import {useContext} from "react";
-import {FilterContext} from "../../context/FilterContext.jsx";
+import {FilterContext} from "../../../context/FilterContext.jsx";
 
 function FilterStatus() {
     const {filterStatus, setFilterStatus} = useContext(FilterContext)
