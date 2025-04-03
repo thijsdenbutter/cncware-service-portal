@@ -2,6 +2,7 @@ import './Chats.css'
 import {useEffect, useState} from 'react'
 import InfoRow from "../../components/info-row/InfoRow.jsx";
 import Divider from "../../components/divider/Divider.jsx";
+import ChatMeta from "../../components/chat-meta/ChatMeta.jsx";
 
 function Chats() {
     const [selectedChatId, setSelectedChatId] = useState(null);
@@ -88,8 +89,8 @@ function Chats() {
                         return (
                             <div key={ticket.id} className={`chat ${isSelected ? "selected" : ""}`}
                                  onClick={() => {setSelectedChatId(ticket.id)}}>
-                                <InfoRow label="Bedrijf" value={ticket.company.name}/>
-                                <InfoRow label="Onderwerp" value={ticket.subject}/>
+                                <ChatMeta label="Bedrijf" value={ticket.company.name}/>
+                                <ChatMeta label="Onderwerp" value={ticket.subject}/>
                                 <Divider direction="horizontal"/>
                             </div>
                         )
