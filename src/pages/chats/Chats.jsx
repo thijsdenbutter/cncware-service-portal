@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react'
 import InfoRow from "../../components/info-row/InfoRow.jsx";
 import Divider from "../../components/divider/Divider.jsx";
 import ChatMeta from "../../components/chat-meta/ChatMeta.jsx";
+import ChatItem from "../../components/chat-item/ChatItem.jsx";
 
 function Chats() {
     const [selectedChatId, setSelectedChatId] = useState(null);
@@ -84,17 +85,17 @@ function Chats() {
     return (
         <div className="chats-layout">
             <div className="chats-bar">
-                    {dummyTickets.map((ticket) => {
-                        const isSelected = selectedChatId === ticket.id;
-                        return (
-                            <div key={ticket.id} className={`chat ${isSelected ? "selected" : ""}`}
-                                 onClick={() => {setSelectedChatId(ticket.id)}}>
-                                <ChatMeta label="Bedrijf" value={ticket.company.name}/>
-                                <ChatMeta label="Onderwerp" value={ticket.subject}/>
-                                <Divider direction="horizontal"/>
-                            </div>
-                        )
-                    })}
+                {dummyTickets.map((ticket) => {
+                    const isSelected = selectedChatId === ticket.id;
+                    return (
+                        <ChatItem
+                            key={ticket.id}
+                            ticket={ticket}
+                            isSelected={isSelected}
+                            onClick={() => setSelectedChatId(ticket.id)}
+                        />
+                    )
+                })}
             </div>
         </div>
     )
