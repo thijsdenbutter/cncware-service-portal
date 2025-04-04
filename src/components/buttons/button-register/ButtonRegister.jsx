@@ -15,7 +15,7 @@ function ButtonRegister({intervalRef, setIsRunning, isRunning, setSeconds}) {
     };
 
     return (
-        <Button caption="Registreer" onClick={registerTimer}/>
+        <Button onClick={registerTimer}>Registreer</Button>
     );
 }
 

@@ -1,12 +1,12 @@
 import './Button.css'
 
-function Button({caption, onClick}) {
+function Button({children, onClick}) {
     return (
         <button
             className="button-default"
             onClick={onClick}
         >
-            {caption}
+            {children}
         </button>
     )
 }
