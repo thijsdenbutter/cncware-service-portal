@@ -6,6 +6,11 @@ html {
 }
 
 :root {
+    --height-controlbar: 5rem;
+    --height-chatbar: 8rem;
+    --width-navbar: 14rem;
+    --width-chatbar: 20rem;
+
     /* typography */
     --font-ui: 'Inter', sans-serif;
     --font-timer: 'Roboto Mono', monospace;

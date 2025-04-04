@@ -1,9 +1,9 @@
 import './Button.css'
 
-function Button({children, onClick}) {
+function Button({children, styling, onClick}) {
     return (
         <button
-            className="button-default"
+            className={`button-${styling}`}
             onClick={onClick}
         >
             {children}

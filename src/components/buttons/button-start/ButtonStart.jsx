@@ -13,7 +13,7 @@ function ButtonStart({intervalRef, setSeconds, setIsRunning}) {
     };
 
     return (
-        <Button onClick={startTimer}>Start</Button>
+        <Button onClick={startTimer} styling="default">Start</Button>
     );
 }
 

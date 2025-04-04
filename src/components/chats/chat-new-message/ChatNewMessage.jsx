@@ -20,15 +20,14 @@ function ChatNewMessage({selectedChatId, onSend}) {
     return (
         <form className="chat-new-message" onSubmit={handleSend}>
             <input type="text"
-                   className="chat-message"
+                   className="chat-input"
                    placeholder="Type een bericht..."
                    value={message}
                    onChange={(e) => setMessage(e.target.value)}
             />
-            <Button
-                type="submit"
-                className="chat-new-message-button"
-            >Verzenden</Button>
+            <Button type="submit" styling="default">
+                Verzenden
+            </Button>
         </form>
     )
 }
