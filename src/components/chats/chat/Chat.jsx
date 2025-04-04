@@ -1,4 +1,5 @@
 import './Chat.css'
+import ChatMessage from "../chat-message/ChatMessage.jsx";
 
 function Chat({selectedChatId}) {
 
@@ -78,11 +79,19 @@ function Chat({selectedChatId}) {
     );
 
     return (
-        selectedTicket.messages.map((message) => {
-            return (
-                <div key={message.id}>{message.text}</div>
-            )
-        })
+        <>
+            <div className="chat-messages">
+                {selectedTicket.messages.map((message) => {
+                    return (
+                        <ChatMessage
+                            key={message.id}
+                            message={message.text}
+                            sender={message.sender}
+                        />
+                    )
+                })}
+            </div>
+    </>
     )
 }
 
