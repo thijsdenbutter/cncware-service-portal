@@ -21,7 +21,7 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
             messages: [
                 {
                     id: "msg-001",
-                    sender: { type: "contact", id: "contact-001", name: "Jan Jansen" },
+                    sender: {type: "contact", id: "contact-001", name: "Jan Jansen"},
                     text: "Hoi, ik krijg een foutmelding bij het installeren.",
                     created_at: "2024-04-01T10:01:00+02:00"
                 }
@@ -43,7 +43,7 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
             messages: [
                 {
                     id: "msg-002",
-                    sender: { type: "contact", id: "contact-002", name: "Lisa de Vries" },
+                    sender: {type: "contact", id: "contact-002", name: "Lisa de Vries"},
                     text: "Waarom zijn er extra kosten op de factuur?",
                     created_at: "2024-04-02T14:01:00+02:00"
                 }
@@ -141,4 +141,4 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
     )
 }
 
-export default ChatBar
+export default ChatBar;

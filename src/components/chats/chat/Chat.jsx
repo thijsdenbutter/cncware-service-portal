@@ -91,8 +91,11 @@ function Chat({selectedChatId}) {
                     )
                 })}
             </div>
+            <div className="chat-new-messages">
+
+            </div>
     </>
     )
 }
 
-export default Chat
+export default Chat;
