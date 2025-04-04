@@ -1,5 +1,6 @@
 import './Chat.css'
 import ChatMessage from "../chat-message/ChatMessage.jsx";
+import ChatNewMessage from "../chat-new-message/ChatNewMessage.jsx";
 
 function Chat({selectedChatId}) {
 
@@ -92,9 +93,11 @@ function Chat({selectedChatId}) {
                 })}
             </div>
             <div className="chat-new-messages">
-
+                <ChatNewMessage
+                    selectedChatId={selectedChatId}
+                />
             </div>
-    </>
+        </>
     )
 }
 
