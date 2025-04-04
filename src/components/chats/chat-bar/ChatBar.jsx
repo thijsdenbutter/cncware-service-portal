@@ -1,11 +1,9 @@
 import './ChatBar.css'
 import ChatItem from "../chat-item/ChatItem.jsx";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {FilterContext} from "../../../context/FilterContext.jsx";
 
-function ChatBar() {
-    const [selectedChatId, setSelectedChatId] = useState(null);
-
+function ChatBar({selectedChatId, setSelectedChatId}) {
     const dummyTickets = [
         {
             id: "ticket-001",
@@ -125,9 +123,6 @@ function ChatBar() {
 
         return matchCostumer && matchStatus;
     });
-
-
-
 
     return (
         <div className="chats-bar">
