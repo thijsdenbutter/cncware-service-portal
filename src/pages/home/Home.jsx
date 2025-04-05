@@ -1,9 +1,46 @@
 import './Home.css'
 import CostumerTile from "../../components/costumer-tile/CostumerTile.jsx";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 function Home() {
+    const [companies, setCompanies] = useState([]);
 
+    useEffect(() => {
+        const fetchCompanies = async () => {
+            const token = localStorage.getItem("teamleader_token");
 
+            if (!token) {
+                console.error("⚠️ Geen toegangstoken gevonden.");
+                return;
+            }
+
+            try {
+                const response = await axios.post(
+                    "https://api.focus.teamleader.eu/companies.list",
+                    {}, // lege body is prima
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            "Content-Type": "application/json"
+                        }
+                    }
+                );
+
+                const companyData = response.data.data;
+                console.log("📦 Bedrijven:", companyData);
+                setCompanies(companyData);
+            } catch (error) {
+                console.error("❌ Fout bij ophalen bedrijven:", error);
+                if (error.response?.status === 401) {
+                    console.warn("🔑 Token is verlopen of ongeldig.");
+                    // eventueel redirect naar login of token verwijderen
+                }
+            }
+        };
+
+        fetchCompanies();
+    }, []);
     const dummyCompanies = [
         {
             data: {
@@ -144,7 +181,7 @@ function Home() {
 
     return (
         <div className="home-layout">
-            {dummyCompanies.map((company) => {
+            {companies.map((company) => {
                    return(
                        <CostumerTile key={company.id} company={company}/>
                    )

@@ -7,19 +7,22 @@ import ticketsCount from "../../helpers/ticketCount.js";
 import supportMinutesLeft from "../../helpers/supportMinutesLeft.js";
 
 function CostumerTile({company}) {
-    const { name, contact, tickets, custom_fields } = company.data;
+    console.log(company.name);
+    const { name} = company;
+    // const { name, contact, tickets, custom_fields } = company;
 
     return (
         <div className="costumer-tile">
+
             <InfoRow label="Bedrijfsnaam" value={name}/>
-            <InfoRow label="Contact"
-                     value={contact.first_name + " " + contact.last_name}/>
-            <Divider direction="horizontal"/>
-            <StatBlock title="Tickets">
-                <Stat label="Open" value={ticketsCount(tickets, "open")}/>
-                <Stat label="Gesloten" value={ticketsCount(tickets, "gesloten")}/>
-                <Stat label="Minuten" value={supportMinutesLeft(custom_fields)}/>
-            </StatBlock>
+            {/*<InfoRow label="Contact"*/}
+            {/*         value={contact.first_name + " " + contact.last_name}/>*/}
+            {/*<Divider direction="horizontal"/>*/}
+            {/*<StatBlock title="Tickets">*/}
+            {/*    <Stat label="Open" value={ticketsCount(tickets, "open")}/>*/}
+            {/*    <Stat label="Gesloten" value={ticketsCount(tickets, "gesloten")}/>*/}
+            {/*    <Stat label="Minuten" value={supportMinutesLeft(custom_fields)}/>*/}
+            {/*</StatBlock>*/}
         </div>
     )
 }
