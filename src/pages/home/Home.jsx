@@ -2,6 +2,8 @@ import './Home.css'
 import CostumerTile from "../../components/costumer-tile/CostumerTile.jsx";
 
 function Home() {
+
+
     const dummyCompanies = [
         {
             data: {

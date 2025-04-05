@@ -8,6 +8,7 @@ import Timer from "../timer/Timer.jsx";
 import ButtonRegister from "../buttons/button-register/ButtonRegister.jsx";
 import FilterCostumer from "../filters/filter-costumer/FilterCostumer.jsx";
 import FilterStatus from "../filters/filter-status/FilterStatus.jsx";
+import Button from "../buttons/button/Button.jsx";
 
 function ControlBar() {
     const [seconds, setSeconds] = useState(0);
@@ -20,6 +21,13 @@ function ControlBar() {
             clearInterval(interval);
         };
     }, []);
+
+const ConnectToTeamleader = () => {
+    window.location.href = "http://localhost:3001/login";
+    }
+
+
+
 
     return (
         <div className="control-bar-outer-container">
@@ -35,6 +43,9 @@ function ControlBar() {
                 <ButtonStop setIsRunning={setIsRunning} intervalRef={intervalRef}/>
                 <ButtonStart intervalRef={intervalRef} setIsRunning={setIsRunning} setSeconds={setSeconds}/>
                 <Divider direction="vertical"/>
+                <Button onClick={() => {ConnectToTeamleader()}} styling="default">
+                    Verbind met teamleader
+                </Button>
             </div>
         </div>
     )
