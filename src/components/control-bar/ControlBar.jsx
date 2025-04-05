@@ -2,12 +2,12 @@ import './ControlBar.css'
 import {NavLink} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import Divider from "../divider/Divider.jsx";
-import ButtonStart from "../button-start/ButtonStart.jsx";
-import ButtonStop from "../button-stop/ButtonStop.jsx";
+import ButtonStart from "../buttons/button-start/ButtonStart.jsx";
+import ButtonStop from "../buttons/button-stop/ButtonStop.jsx";
 import Timer from "../timer/Timer.jsx";
-import ButtonRegister from "../button-register/ButtonRegister.jsx";
-import FilterCostumer from "../filter-costumer/FilterCostumer.jsx";
-import FilterStatus from "../filter-status/FilterStatus.jsx";
+import ButtonRegister from "../buttons/button-register/ButtonRegister.jsx";
+import FilterCostumer from "../filters/filter-costumer/FilterCostumer.jsx";
+import FilterStatus from "../filters/filter-status/FilterStatus.jsx";
 
 function ControlBar() {
     const [seconds, setSeconds] = useState(0);

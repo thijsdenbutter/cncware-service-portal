@@ -1,0 +1,22 @@
+.chat-item {
+    background-color: var(--input-bg);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid transparent;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.chat-item:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.chat-item.selected {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-focus);
+    box-shadow: 0 0 0 2px rgba(0, 198, 198, 0.3);
+}

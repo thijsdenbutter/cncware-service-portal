@@ -9,7 +9,7 @@ function ButtonStop({intervalRef, setIsRunning}) {
     };
 
     return (
-        <Button caption="Stop" onClick={stopTimer}/>
+        <Button onClick={stopTimer} styling="default">Stop</Button>
     );
 }
 export default ButtonStop

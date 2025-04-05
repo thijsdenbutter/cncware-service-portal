@@ -1,4 +1,4 @@
-function TicketsCount(tickets, status) {
+function ticketsCount(tickets, status) {
     return tickets.filter(ticket => ticket.status === status).length;
 }
-export default TicketsCount;
+export default ticketsCount;

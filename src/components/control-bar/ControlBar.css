@@ -1,4 +1,5 @@
 .control-bar-outer-container {
+    height: var(--height-controlbar);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
