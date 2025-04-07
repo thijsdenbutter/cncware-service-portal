@@ -4,7 +4,7 @@ import Divider from "../divider/Divider.jsx";
 import StatBlock from "../stats/stat-block/StatBlock.jsx";
 import Stat from "../stats/stat/Stat.jsx";
 
-function CostumerTile({name, contact, supportMinutes}) {
+function CostumerTile({name, contact, supportMinutes, tickets, ticketStatuses}) {
 
     return (
         <div className="costumer-tile">
