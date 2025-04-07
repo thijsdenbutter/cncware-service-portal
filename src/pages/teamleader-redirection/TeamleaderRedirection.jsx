@@ -1,8 +1,16 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import {useContext, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
+import {TeamleaderContext} from "../../context/TeamleaderContext.jsx";
 
 const TeamleaderRedirect = () => {
     const navigate = useNavigate();
+
+    const {
+        teamleaderDataIsLoaded,
+        setTeamleaderDataIsLoaded,
+        fetchCompanyCustomFields,
+        fetchTicketStatuses,
+    } = useContext(TeamleaderContext)
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -10,7 +18,12 @@ const TeamleaderRedirect = () => {
 
         if (token) {
             localStorage.setItem("teamleader_token", token);
-            console.log("✅ Token opgeslagen:", token);
+
+            if (!teamleaderDataIsLoaded) {
+                fetchTicketStatuses(token)
+                fetchCompanyCustomFields(token)
+                setTeamleaderDataIsLoaded(false)
+            }
         }
 
         navigate("/");

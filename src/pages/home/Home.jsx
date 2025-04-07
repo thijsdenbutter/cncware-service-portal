@@ -1,50 +1,17 @@
 import './Home.css'
 import CostumerTile from "../../components/costumer-tile/CostumerTile.jsx";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import valueOfCustomField from "../../helpers/valueOfCustomField.js";
+import {TeamleaderContext} from "../../context/TeamleaderContext.jsx";
 
 function Home() {
     const [companies, setCompanies] = useState([]);
-    const [ticketStatuses, setTicketStatuses] = useState([]);
+
+    const { customFieldsCompanies } = useContext(TeamleaderContext)
 
     useEffect(() => {
-        const fetchTicketStatuses = async () => {
-            const token = localStorage.getItem("teamleader_token");
 
-            if (!token) {
-                console.error("⚠️ Geen toegangstoken gevonden.");
-                return;
-            }
-
-            try {
-                const statusesResponse = await axios.post(
-                    "https://api.focus.teamleader.eu/ticketStatus.list",
-                    {}, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "application/json"
-                        }
-                    }
-                )
-                const listOfStatuses = statusesResponse.data.data;
-                console.log(listOfStatuses)
-
-                const statusList = listOfStatuses.map(status => ({
-                    id: status.id,
-                    name: status.status === "custom" ? status.label : status.status,
-                }))
-
-                setTicketStatuses(statusList);
-
-            } catch (error) {
-                console.error("❌ Fout bij ophalen bedrijven:", error);
-                if (error.response?.status === 401) {
-                    console.warn("🔑 Token is verlopen of ongeldig.");
-                    // eventueel redirect naar login of token verwijderen
-                }
-            }
-        }
         const fetchCompanies = async () => {
             const token = localStorage.getItem("teamleader_token");
 
@@ -118,7 +85,7 @@ function Home() {
                     const contact = contactResponse.data.data;
                     const tickets = ticketsResponse.data.data
 
-                    const supportMinutes = valueOfCustomField(fullCompany.custom_fields, "8e2add71-f057-0e99-8b56-0f3ae3684357");
+                    const supportMinutes = valueOfCustomField(fullCompany.custom_fields, customFieldsCompanies,"Support minuten");
 
                     return {
                         id: companyId,
@@ -141,7 +108,6 @@ function Home() {
         };
 
         fetchCompanies()
-        fetchTicketStatuses()
     }, []);
 
     useEffect(() => console.log(companies), [companies]);
@@ -156,6 +122,7 @@ function Home() {
                         name={company.name}
                         contact={company.contact}
                         supportMinutes={company.supportMinutes}
+                        tickets={company.tickets}
                     />
                 )
             })}

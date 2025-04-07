@@ -3,8 +3,13 @@ import InfoRow from "../info-row/InfoRow.jsx";
 import Divider from "../divider/Divider.jsx";
 import StatBlock from "../stats/stat-block/StatBlock.jsx";
 import Stat from "../stats/stat/Stat.jsx";
+import ticketsCount from "../../helpers/ticketCount.js";
+import {useContext} from "react";
+import {TeamleaderContext} from "../../context/TeamleaderContext.jsx";
 
-function CostumerTile({name, contact, supportMinutes, tickets, ticketStatuses}) {
+function CostumerTile({name, contact, supportMinutes, tickets}) {
+
+    const {ticketStatuses} = useContext(TeamleaderContext)
 
     return (
         <div className="costumer-tile">
@@ -14,8 +19,8 @@ function CostumerTile({name, contact, supportMinutes, tickets, ticketStatuses}) 
                      value={contact.first_name + " " + contact.last_name}/>
             <Divider direction="horizontal"/>
             <StatBlock title="Tickets">
-                {/*<Stat label="Open" value={ticketsCount(tickets, "open")}/>*/}
-                {/*<Stat label="Gesloten" value={ticketsCount(tickets, "gesloten")}/>*/}
+                <Stat label="Open" value={ticketsCount(tickets, ticketStatuses, "open")}/>
+                <Stat label="Gesloten" value={ticketsCount(tickets, ticketStatuses, "closed")}/>
                 <Stat label="Minuten" value={supportMinutes}/>
             </StatBlock>
         </div>

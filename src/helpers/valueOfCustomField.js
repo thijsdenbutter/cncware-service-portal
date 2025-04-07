@@ -1,5 +1,10 @@
-function valueOfCustomField(customFields, id = "custom_field_support_minutes") {
-    const field = customFields.find(field => field.definition?.id === id);
+function valueOfCustomField(customFields, customFieldsDefinitions, targetField) {
+
+    const target = customFieldsDefinitions.find(customField => customField.label === targetField);
+    console.log(customFields);
+    if (!target) return 0;
+
+    const field = customFields.find(field => field?.definition.id === target.id);
     return field?.value ?? 0;
 }
 
