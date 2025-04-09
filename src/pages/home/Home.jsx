@@ -68,7 +68,7 @@ function Home() {
             ]);
 
             const fullCompany = infoRes.data.data;
-            const contact = contactRes.data.data;
+            const contact = contactRes.data.data || null;
             const tickets = ticketsRes.data.data;
 
             const supportMinutes = valueOfCustomField(
