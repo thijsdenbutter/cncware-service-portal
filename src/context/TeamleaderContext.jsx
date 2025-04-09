@@ -4,13 +4,15 @@ import axios from "axios";
 
 export const TeamleaderContext = createContext({});
 
-export function TeamleaderProvider({ children }) {
-    const [ teamleaderDataIsLoaded, setTeamleaderDataIsLoaded ] = useState(false);
-    const [ ticketStatuses, setTicketStatuses ] = useState([]);
-    const [ customFieldsCompanies, setCustomFieldsCompanies ] = useState([]);
+export function TeamleaderProvider({children}) {
+    const [teamleaderDataIsLoaded, setTeamleaderDataIsLoaded] = useState(false);
+    const [ticketStatuses, setTicketStatuses] = useState([]);
+    const [customFieldsCompanies, setCustomFieldsCompanies] = useState([]);
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
-     async function fetchTicketStatuses (token){
-
+    async function fetchTicketStatuses(token) {
+        setIsLoading(true);
         try {
             const statusesResponse = await axios.post(
                 "https://api.focus.teamleader.eu/ticketStatus.list",
@@ -31,15 +33,15 @@ export function TeamleaderProvider({ children }) {
             setTicketStatuses(statusList);
 
         } catch (error) {
+            setError("❌ Fout bij ophalen ticket statussen");
             console.error("❌ Fout bij ophalen ticket statussen:", error);
-            if (error.response?.status === 401) {
-                console.warn("🔑 Token is verlopen of ongeldig.");
-            }
+        } finally {
+            setIsLoading(false);
         }
     }
 
-    async function fetchCustomFields (token, contextFilter){
-
+    async function fetchCustomFields(token, contextFilter) {
+        setIsLoading(true)
         try {
             const response = await axios.post(
                 "https://api.focus.teamleader.eu/customFieldDefinitions.list",
@@ -52,13 +54,13 @@ export function TeamleaderProvider({ children }) {
                     }
                 }
             )
-            return(response.data.data);
+            return (response.data.data);
 
         } catch (error) {
-            console.error(`❌ Fout bij ophalen customfields ${contextFilter}:`, error);
-            if (error.response?.status === 401) {
-                console.warn("🔑 Token is verlopen of ongeldig.");
-            }
+            setError(`❌ Fout bij ophalen customfield: ${contextFilter}`)
+            console.error(`❌ Fout bij ophalen customfield:, ${contextFilter}:`, error);
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -76,7 +78,10 @@ export function TeamleaderProvider({ children }) {
             fetchCompanyCustomFields,
             customFieldsCompanies,
             fetchTicketStatuses,
-            ticketStatuses
+            ticketStatuses,
+            error,
+            setError,
+            isLoading
         }}>
             {children}
         </TeamleaderContext.Provider>

@@ -10,9 +10,11 @@ const TeamleaderRedirect = () => {
         setTeamleaderDataIsLoaded,
         fetchCompanyCustomFields,
         fetchTicketStatuses,
+        error
     } = useContext(TeamleaderContext)
 
     useEffect(() => {
+
         const params = new URLSearchParams(window.location.search);
         const token = params.get("token");
 
@@ -22,14 +24,22 @@ const TeamleaderRedirect = () => {
             if (!teamleaderDataIsLoaded) {
                 fetchTicketStatuses(token)
                 fetchCompanyCustomFields(token)
-                setTeamleaderDataIsLoaded(false)
+                setTeamleaderDataIsLoaded(true)
             }
         }
 
-        navigate("/");
+
     }, []);
 
-    return <p>Verwerken van Teamleader authenticatie...</p>;
+    useEffect(() => {
+        if (teamleaderDataIsLoaded && !error) {
+            navigate("/");
+        }
+    }, [teamleaderDataIsLoaded, error])
+
+    return (error ? <p>{error}</p> :
+            <p>Verwerken van Teamleader authenticatie...</p>
+    )
 };
 
 export default TeamleaderRedirect;
