@@ -111,12 +111,12 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
         }
     ];
 
-    const {filterCostumer, filterStatus} = useContext(FilterContext)
+    const {filterCompanyName, filterStatus} = useContext(FilterContext)
 
     const filteredTickets = dummyTickets.filter((ticket) => {
         const matchCostumer = ticket.company.name
             .toLowerCase()
-            .includes(filterCostumer.toLowerCase());
+            .includes(filterCompanyName.toLowerCase());
 
         const matchStatus =
             filterStatus === "" || ticket.status === filterStatus;

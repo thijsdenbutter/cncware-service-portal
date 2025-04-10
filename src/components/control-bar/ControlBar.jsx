@@ -6,7 +6,7 @@ import ButtonStart from "../buttons/button-start/ButtonStart.jsx";
 import ButtonStop from "../buttons/button-stop/ButtonStop.jsx";
 import Timer from "../timer/Timer.jsx";
 import ButtonRegister from "../buttons/button-register/ButtonRegister.jsx";
-import FilterCostumer from "../filters/filter-costumer/FilterCostumer.jsx";
+import FilterCompanyName from "../filters/filter-company-name/FilterCompanyName.jsx";
 import FilterStatus from "../filters/filter-status/FilterStatus.jsx";
 import Button from "../buttons/button/Button.jsx";
 
@@ -32,7 +32,7 @@ const ConnectToTeamleader = () => {
     return (
         <div className="control-bar-outer-container">
             <div className="control-bar-inner-container">
-                <FilterCostumer/>
+                <FilterCompanyName/>
                 <FilterStatus/>
             </div>
             <div className="control-bar-inner-container">
