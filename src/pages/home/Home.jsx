@@ -4,14 +4,21 @@ import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import valueOfCustomField from "../../helpers/valueOfCustomField.js";
 import {TeamleaderContext} from "../../context/TeamleaderContext.jsx";
+import {FilterContext} from "../../context/FilterContext.jsx";
 
 function Home() {
     const [companies, setCompanies] = useState([]);
     const [companyError, setCompanyError] = useState(null);
-    const {customFieldsCompanies,
+    const {
+        customFieldsCompanies,
         isLoading,
         error: contextError,
     } = useContext(TeamleaderContext)
+    const {
+        filterData,
+        filterCompanyName,
+        filterStatus
+    } = useContext(FilterContext)
 
     async function fetchBaseCompanies(token) {
         const response = await axios.post(
@@ -38,14 +45,14 @@ function Home() {
 
         try {
             const [infoRes, contactRes, ticketsRes] = await Promise.all([
-                axios.post("https://api.focus.teamleader.eu/companies.info", { id: companyId }, {
+                axios.post("https://api.focus.teamleader.eu/companies.info", {id: companyId}, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json"
                     }
                 }),
                 axios.post("https://api.focus.teamleader.eu/contacts.list", {
-                    filter: { company_id: companyId }
+                    filter: {company_id: companyId}
                 }, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -90,7 +97,6 @@ function Home() {
         }
     }
 
-
     async function fetchAndBuildCompanies() {
         const token = localStorage.getItem("teamleader_token");
 
@@ -129,9 +135,16 @@ function Home() {
         return <p>{contextError || companyError}</p>;
     }
 
+    const filteredCompanies = filterData(
+        companies,
+        (company) => company.name,
+        (company) => company.tickets.map((t) => t.status.id)
+    );
+
     return (
+
         <div className="home-layout">
-            {companies.map((company) => {
+            {filteredCompanies.map((company) => {
                 return (
                     <CostumerTile
                         key={company.id}
