@@ -7,9 +7,11 @@ function FilterSelect({ value, onChange, options, placeholder }) {
             value={value}
             onChange={onChange}>
             <option value="">{placeholder}</option>
-            {options.map((option) => (
-                <option key={option} value={option}>
-                    {option.charAt(0).toUpperCase() + option.slice(1)}
+            {options.map((option, index) => (
+                <option key={index} value={option.value}>
+                    {typeof option.label === "string"
+                        ? option.label.charAt(0).toUpperCase() + option.label.slice(1)
+                        : option.label}
                 </option>
             ))}
         </select>

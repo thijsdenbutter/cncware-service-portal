@@ -14,7 +14,11 @@ function Home() {
         isLoading,
         error: contextError,
     } = useContext(TeamleaderContext)
-    const { filterData } = useContext(FilterContext)
+    const {
+        filterData,
+        filterCompanyName,
+        filterStatus
+    } = useContext(FilterContext)
 
     async function fetchBaseCompanies(token) {
         const response = await axios.post(
@@ -131,13 +135,16 @@ function Home() {
         return <p>{contextError || companyError}</p>;
     }
 
+    const filteredCompanies = filterData(
+        companies,
+        (company) => company.name,
+        (company) => company.tickets.map((t) => t.status.id)
+    );
+
     return (
+
         <div className="home-layout">
-            {filterData(
-                companies,
-                (company) => company.name,
-                (company) => company.tickets.length > 0 ? company.tickets : ""
-            ).map((company) => {
+            {filteredCompanies.map((company) => {
                 return (
                     <CostumerTile
                         key={company.id}
@@ -148,18 +155,6 @@ function Home() {
                     />
                 )
             })}
-
-            {/*    companies.map((company) => {*/}
-            {/*    return (*/}
-            {/*        <CostumerTile*/}
-            {/*            key={company.id}*/}
-            {/*            name={company.name}*/}
-            {/*            contact={company.contact}*/}
-            {/*            supportMinutes={company.supportMinutes}*/}
-            {/*            tickets={company.tickets}*/}
-            {/*        />*/}
-            {/*    )*/}
-            {/*})}*/}
         </div>
     )
 }

@@ -1,15 +1,22 @@
 import {useContext} from "react";
 import {FilterContext} from "../../../context/FilterContext.jsx";
 import FilterSelect from "../filter-select/FilterSelect.jsx";
+import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
 
 function FilterStatus() {
     const {filterStatus, setFilterStatus} = useContext(FilterContext)
+    const { ticketStatuses } = useContext(TeamleaderContext)
+
+    const options = ticketStatuses ? ticketStatuses.map((ticketStatus) => ({
+        label: ticketStatus.name,
+        value: ticketStatus.id
+    })) : ""
 
     return (
         <FilterSelect
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            options={["open", "gesloten"]}
+            options={options}
             placeholder="Filter op status"
         />
     )

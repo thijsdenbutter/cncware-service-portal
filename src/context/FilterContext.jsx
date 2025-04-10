@@ -2,7 +2,7 @@ import {createContext, useState} from "react";
 
 export const FilterContext = createContext({})
 
-export function  FilterProvider({children}) {
+export function FilterProvider({children}) {
     const [filterCompanyName, setFilterCompanyName] = useState("")
     const [filterStatus, setFilterStatus] = useState("")
 
@@ -16,7 +16,10 @@ export function  FilterProvider({children}) {
                 .includes(filterCompanyName.toLowerCase());
 
             const matchStatus =
-                filterStatus === "" || status === filterStatus;
+                filterStatus === "" || (
+                    Array.isArray(getStatus(item))
+                        ? getStatus(item).some(status => status === filterStatus)
+                        : status === filterStatus);
 
             return matchCompanyName && matchStatus;
         })
