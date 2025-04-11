@@ -17,7 +17,7 @@ function FilterStatus() {
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
             options={options}
-            placeholder="Filter op status"
+            placeholder="Input op status"
         />
     )
 }

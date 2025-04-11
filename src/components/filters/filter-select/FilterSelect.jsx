@@ -3,7 +3,7 @@ import './FilterSelect.css'
 function FilterSelect({ value, onChange, options, placeholder }) {
     return (
         <select
-            className={`filter-input ${value === "" ? "placeholder-active" : ""}`}
+            className={`input-default ${value === "" ? "placeholder-active" : ""}`}
             value={value}
             onChange={onChange}>
             <option value="">{placeholder}</option>

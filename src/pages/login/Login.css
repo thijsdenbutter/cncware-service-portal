@@ -1,0 +1,49 @@
+.login-form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: var(--bg-main);
+    overflow-y: auto;
+    min-height: 100%;
+    width: 100%;
+}
+
+.login-form {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 20rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    border: 1px solid var(--card-border);
+}
+
+label {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.form-toggle {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.form-toggle span {
+    color: var(--primary-default);
+    cursor: pointer;
+    font-weight: var(--font-weight-medium);
+    margin-left: 0.25rem;
+}
+
+.form-error {
+    color: var(--error);
+    font-size: var(--font-size-sm);
+    margin: -0.25rem 0 0.5rem;
+}

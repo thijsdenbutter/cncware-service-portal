@@ -36,6 +36,7 @@ const ConnectToTeamleader = () => {
                 <FilterStatus/>
             </div>
             <div className="control-bar-inner-container">
+                <NavLink to="/login">Login</NavLink>
                 <NavLink to="/nieuwe-chat">Nieuwe chat</NavLink>
                 <Divider direction="vertical"/>
                 <Timer seconds={seconds}/>
