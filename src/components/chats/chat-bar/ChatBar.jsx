@@ -7,6 +7,9 @@ import axios from "axios";
 function ChatBar({selectedChatId, setSelectedChatId}) {
     const [chatError, setChatError] = useState(null);
     const [tickets, setTickets] = useState([]);
+    const {
+        filterData,
+    } = useContext(FilterContext)
 
     async function fetchBaseTickets(token) {
         const response = await axios.post(
@@ -24,7 +27,6 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
                 }
             }
         );
-        console.log("ticket lijst", response.data.data);
         return response.data.data;
     }
 
@@ -39,7 +41,6 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
                 }
             }
         );
-        console.log(response.data.data);
         return response.data.data;
     }
 
@@ -54,8 +55,6 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
                 }
             }
         );
-        console.log(response.data.data);
-
         return response.data.data;
     }
 
@@ -89,6 +88,7 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
 
                         return {
                             id: ticket.id,
+                            status: ticket.status,
                             subject: ticket.subject,
                             customer: {
                                 id: customerInfo.id,
@@ -102,6 +102,7 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
                         customerInfo = await fetchCompanyInfo(customer.id, token);
                         return {
                             id: ticket.id,
+                            status: ticket.status,
                             subject: ticket.subject,
                             customer: {
                                 id: null,
@@ -116,6 +117,7 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
 
                     return {
                         id: ticket.id,
+                        status: ticket.status,
                         subject: ticket.subject,
                         customer: {
                             id: customer.id,
@@ -129,7 +131,7 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
             setTickets(enrichedTickets);
         } catch (err) {
             console.error("❌ Fout bij ophalen/verrijken tickets:", err);
-            setChatError("Fout bij ophalen/verrijken van de chats.");
+            setChatError("❌ Fout bij ophalen van de chats.");
         }
     }
 
@@ -137,13 +139,20 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
         fetchAndBuildTickets();
     }, [])
 
+
+    const filteredTickets = filterData(
+        tickets,
+        (ticket) => ticket.company.name,
+        (ticket) => ticket.status.id
+    );
+
     if (chatError) return (
         <p>{chatError}</p>
     )
 
     return (
         <div className="chats-bar">
-            {tickets.map((ticket) => {
+            {filteredTickets.map((ticket) => {
                 const isSelected = selectedChatId === ticket.id;
                 return (
                     <ChatItem
