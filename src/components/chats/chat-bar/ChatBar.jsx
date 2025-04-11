@@ -3,14 +3,18 @@ import ChatItem from "../chat-item/ChatItem.jsx";
 import {useContext, useEffect, useState} from "react";
 import {FilterContext} from "../../../context/FilterContext.jsx";
 import axios from "axios";
+import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
 
 function ChatBar({selectedChatId, setSelectedChatId}) {
     const [chatsError, setChatsError] = useState(null);
     const [tickets, setTickets] = useState([]);
     const {
         filterData,
-        getValidTeamleaderAccessToken
+
     } = useContext(FilterContext)
+    const {
+        getValidTeamleaderAccessToken
+    } = useContext(TeamleaderContext);
 
     async function fetchBaseTickets(token) {
         const response = await axios.post(
@@ -60,7 +64,7 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
     }
 
     async function fetchAndBuildTickets() {
-        const token = getValidTeamleaderAccessToken()
+        const token = await getValidTeamleaderAccessToken()
 
         if (!token) {
             setChatsError("Geen toegangstoken gevonden.");
