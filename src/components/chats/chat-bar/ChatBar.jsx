@@ -5,10 +5,11 @@ import {FilterContext} from "../../../context/FilterContext.jsx";
 import axios from "axios";
 
 function ChatBar({selectedChatId, setSelectedChatId}) {
-    const [chatError, setChatError] = useState(null);
+    const [chatsError, setChatsError] = useState(null);
     const [tickets, setTickets] = useState([]);
     const {
         filterData,
+        getValidTeamleaderAccessToken
     } = useContext(FilterContext)
 
     async function fetchBaseTickets(token) {
@@ -59,10 +60,10 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
     }
 
     async function fetchAndBuildTickets() {
-        const token = localStorage.getItem("teamleader_token");
+        const token = getValidTeamleaderAccessToken()
 
         if (!token) {
-            setChatError("Geen toegangstoken gevonden.");
+            setChatsError("Geen toegangstoken gevonden.");
             return;
         }
 
@@ -131,7 +132,7 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
             setTickets(enrichedTickets);
         } catch (err) {
             console.error("❌ Fout bij ophalen/verrijken tickets:", err);
-            setChatError("❌ Fout bij ophalen van de chats.");
+            setChatsError("❌ Fout bij ophalen van de chats.");
         }
     }
 
@@ -139,15 +140,14 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
         fetchAndBuildTickets();
     }, [])
 
-
     const filteredTickets = filterData(
         tickets,
         (ticket) => ticket.company.name,
         (ticket) => ticket.status.id
     );
 
-    if (chatError) return (
-        <p>{chatError}</p>
+    if (chatsError) return (
+        <p>{chatsError}</p>
     )
 
     return (

@@ -29,15 +29,46 @@ router.get("/callback", async (req, res) => {
             redirect_uri: process.env.REDIRECT_URI,
         });
 
-        const { access_token, refresh_token } = response.data;
+        const { access_token, refresh_token, expires_in } = response.data;
+        const expires_at = Date.now() + expires_in * 1000;
+
         console.log("✅ Access token ontvangen:", access_token);
         console.log("🔄 Refresh token ontvangen:", refresh_token);
+        console.log("⏰ Token verloopt om:", new Date(expires_at).toISOString());
 
-        res.redirect(`http://localhost:5173/teamleader-auth?token=${access_token}`);
+        res.redirect(
+            `http://localhost:5173/teamleader-auth?token=${access_token}&refresh=${refresh_token}&expires_at=${expires_at}`
+        );
 
     } catch (error) {
         console.error("❌ Fout bij ophalen toegangstoken:", error.response?.data || error.message);
         res.status(500).send("Er is een fout opgetreden bij het ophalen van het toegangstoken.");
+    }
+});
+
+router.post("/refresh", async (req, res) => {
+    const { refresh_token } = req.body;
+
+    if (!refresh_token) {
+        return res.status(400).send("Refresh token ontbreekt.");
+    }
+
+    try {
+        const response = await axios.post("https://focus.teamleader.eu/oauth2/access_token", {
+            grant_type: "refresh_token",
+            refresh_token,
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET,
+        });
+
+        const { access_token, refresh_token: newRefresh, expires_in } = response.data;
+        const expires_at = Date.now() + expires_in * 1000;
+
+        res.json({ access_token, refresh_token: newRefresh, expires_in, expires_at });
+
+    } catch (error) {
+        console.error("❌ Fout bij verversen token:", error.response?.data || error.message);
+        res.status(500).send("Verversen van token mislukt.");
     }
 });
 

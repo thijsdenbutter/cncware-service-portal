@@ -1,8 +1,46 @@
 import './Chat.css'
 import ChatMessage from "../chat-message/ChatMessage.jsx";
 import ChatNewMessage from "../chat-new-message/ChatNewMessage.jsx";
+import {useContext, useEffect, useState} from "react";
+import axios from "axios";
+import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
 
 function Chat({selectedChatId}) {
+    const [chatError, setChatError] = useState(null);
+    const [messages, setMessages] = useState(null);
+    const { getValidTeamleaderAccessToken } = useContext(TeamleaderContext)
+
+    async function fetchMessages(token) {
+        const response = await axios.post(
+            "https://api.focus.teamleader.eu/tickets.listMessages",
+            {
+                page: {
+                    size: 50,
+                    number: 1
+                }
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+        return response.data.data;
+    }
+
+    useEffect(() => {
+
+        const token = getValidTeamleaderAccessToken()
+
+        if (!token) {
+            setChatError("Geen toegangstoken gevonden.");
+            return;
+        }
+
+        fetchMessages(token);
+
+    }, []);
 
     const dummyTickets = [
         {
@@ -142,17 +180,17 @@ function Chat({selectedChatId}) {
 
     return (
         <div className="chat-layout">
-            <div className="chat-messages">
-                {selectedTicket.messages.map((message) => {
-                    return (
-                        <ChatMessage
-                            key={message.id}
-                            message={message.text}
-                            sender={message.sender}
-                        />
-                    )
-                })}
-            </div>
+            {/*<div className="chat-messages">*/}
+            {/*    {selectedTicket.messages.map((message) => {*/}
+            {/*        return (*/}
+            {/*            <ChatMessage*/}
+            {/*                key={message.id}*/}
+            {/*                message={message.text}*/}
+            {/*                sender={message.sender}*/}
+            {/*            />*/}
+            {/*        )*/}
+            {/*    })}*/}
+            {/*</div>*/}
             <div>
                 <ChatNewMessage
                     selectedChatId={selectedChatId}

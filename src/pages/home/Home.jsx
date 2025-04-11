@@ -13,6 +13,7 @@ function Home() {
         customFieldsCompanies,
         isLoading,
         error: contextError,
+        getValidTeamleaderAccessToken
     } = useContext(TeamleaderContext)
     const {
         filterData,
@@ -98,7 +99,7 @@ function Home() {
     }
 
     async function fetchAndBuildCompanies() {
-        const token = localStorage.getItem("teamleader_token");
+        const token = getValidTeamleaderAccessToken()
 
         if (!token) {
             setCompanyError("Geen toegangstoken gevonden.");
