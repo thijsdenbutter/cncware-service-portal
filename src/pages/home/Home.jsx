@@ -99,7 +99,7 @@ function Home() {
     }
 
     async function fetchAndBuildCompanies() {
-        const token = getValidTeamleaderAccessToken()
+        const token = await getValidTeamleaderAccessToken()
 
         if (!token) {
             setCompanyError("Geen toegangstoken gevonden.");

@@ -10,7 +10,15 @@ function Chat({selectedChatId}) {
     const [messages, setMessages] = useState(null);
     const { getValidTeamleaderAccessToken } = useContext(TeamleaderContext)
 
-    async function fetchMessages(token) {
+    async function fetchMessages() {
+
+        const token = await getValidTeamleaderAccessToken()
+
+        if (!token) {
+            setChatError("Geen toegangstoken gevonden.");
+            return;
+        }
+
         const response = await axios.post(
             "https://api.focus.teamleader.eu/tickets.listMessages",
             {
@@ -30,13 +38,6 @@ function Chat({selectedChatId}) {
     }
 
     useEffect(() => {
-
-        const token = getValidTeamleaderAccessToken()
-
-        if (!token) {
-            setChatError("Geen toegangstoken gevonden.");
-            return;
-        }
 
         fetchMessages(token);
 
