@@ -12,7 +12,7 @@ function Chats() {
     useEffect(() => {
         login({
             type: "user",
-            id: "user-001",
+            id: "c51ac3a4-1db6-0376-9350-4b8afc070afc",
             name: "Supportmedewerker"
         })
     }, [])

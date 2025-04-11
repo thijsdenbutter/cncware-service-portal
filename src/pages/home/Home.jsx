@@ -13,11 +13,10 @@ function Home() {
         customFieldsCompanies,
         isLoading,
         error: contextError,
+        getValidTeamleaderAccessToken
     } = useContext(TeamleaderContext)
     const {
         filterData,
-        filterCompanyName,
-        filterStatus
     } = useContext(FilterContext)
 
     async function fetchBaseCompanies(token) {
@@ -45,7 +44,9 @@ function Home() {
 
         try {
             const [infoRes, contactRes, ticketsRes] = await Promise.all([
-                axios.post("https://api.focus.teamleader.eu/companies.info", {id: companyId}, {
+                axios.post("https://api.focus.teamleader.eu/companies.info", {
+                    id: companyId
+                }, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json"
@@ -98,7 +99,7 @@ function Home() {
     }
 
     async function fetchAndBuildCompanies() {
-        const token = localStorage.getItem("teamleader_token");
+        const token = await getValidTeamleaderAccessToken()
 
         if (!token) {
             setCompanyError("Geen toegangstoken gevonden.");
@@ -115,7 +116,7 @@ function Home() {
             setCompanies(filtered);
         } catch (err) {
             console.error("❌ Fout bij ophalen bedrijven:", err);
-            setCompanyError("Fout bij ophalen bedrijven.");
+            setCompanyError("❌ Fout bij ophalen bedrijven.");
         }
     }
 

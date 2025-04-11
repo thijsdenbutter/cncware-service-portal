@@ -8,7 +8,9 @@ function ChatMessage({message, sender}) {
     const myId = user?.id
 
     return (
-        <div className={`chat-message ${sender.id === myId ? "is-mine" : "is-not-mine"}`}>{message}</div>
+        <div className={`chat-message ${sender.id === myId ? "is-mine" : "is-not-mine"}`}>
+            <div dangerouslySetInnerHTML={{__html: message}}/>
+        </div>
     )
 }
 

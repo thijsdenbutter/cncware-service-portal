@@ -5,11 +5,42 @@ import axios from "axios";
 export const TeamleaderContext = createContext({});
 
 export function TeamleaderProvider({children}) {
-    const [teamleaderDataIsLoaded, setTeamleaderDataIsLoaded] = useState(false);
     const [ticketStatuses, setTicketStatuses] = useState([]);
     const [customFieldsCompanies, setCustomFieldsCompanies] = useState([]);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+
+    async function getValidTeamleaderAccessToken() {
+        const token = localStorage.getItem("teamleader_token");
+        const refreshToken = localStorage.getItem("teamleader_refresh_token");
+        const expiresAt = parseInt(localStorage.getItem("teamleader_token_expires_at") || "0");
+        const now = Date.now();
+        const buffer = 60 * 1000;
+
+        if (token && now < expiresAt - buffer) {
+            return token;
+        }
+
+        try {
+            const res = await axios.post("http://localhost:3001/auth/refresh", {
+                refresh_token: refreshToken
+            });
+
+            const newToken = res.data.access_token;
+            const newRefresh = res.data.refresh_token;
+            const newExpiresAt = Date.now() + (res.data.expires_in || 7200) * 1000;
+
+            localStorage.setItem("teamleader_token", newToken);
+            localStorage.setItem("teamleader_refresh_token", newRefresh);
+            localStorage.setItem("teamleader_token_expires_at", newExpiresAt.toString());
+
+            return newToken;
+        } catch (err) {
+            console.error("❌ Token verversen mislukt:", err);
+            setError("Kon geen nieuwe toegangstoken ophalen.");
+            return null;
+        }
+    }
 
     async function fetchTicketStatuses(token) {
         setIsLoading(true);
@@ -73,15 +104,14 @@ export function TeamleaderProvider({children}) {
 
     return (
         <TeamleaderContext.Provider value={{
-            teamleaderDataIsLoaded,
-            setTeamleaderDataIsLoaded,
             fetchCompanyCustomFields,
             customFieldsCompanies,
             fetchTicketStatuses,
             ticketStatuses,
             error,
             setError,
-            isLoading
+            isLoading,
+            getValidTeamleaderAccessToken
         }}>
             {children}
         </TeamleaderContext.Provider>
