@@ -5,7 +5,6 @@ import axios from "axios";
 export const TeamleaderContext = createContext({});
 
 export function TeamleaderProvider({children}) {
-    const [teamleaderDataIsLoaded, setTeamleaderDataIsLoaded] = useState(false);
     const [ticketStatuses, setTicketStatuses] = useState([]);
     const [customFieldsCompanies, setCustomFieldsCompanies] = useState([]);
     const [error, setError] = useState(null);
@@ -105,8 +104,6 @@ export function TeamleaderProvider({children}) {
 
     return (
         <TeamleaderContext.Provider value={{
-            teamleaderDataIsLoaded,
-            setTeamleaderDataIsLoaded,
             fetchCompanyCustomFields,
             customFieldsCompanies,
             fetchTicketStatuses,

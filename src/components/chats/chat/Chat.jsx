@@ -4,6 +4,8 @@ import ChatNewMessage from "../chat-new-message/ChatNewMessage.jsx";
 import {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
+import {AuthContext} from "../../../context/AuthContext.jsx";
+import formatDateTimeWithOffset from "../../../helpers/formatDateTimeWithOffset.js";
 
 function Chat({selectedChatId}) {
     const [chatError, setChatError] = useState(null);
@@ -11,8 +13,8 @@ function Chat({selectedChatId}) {
     const [loading, setLoading] = useState(false);
 
     const {getValidTeamleaderAccessToken} = useContext(TeamleaderContext)
+    const {user} = useContext(AuthContext)
 
-    useEffect(() => {
         async function fetchMessages() {
             setLoading(true);
             setChatError(null);
@@ -55,10 +57,50 @@ function Chat({selectedChatId}) {
             }
         }
 
+    useEffect(() => {
+
         if (selectedChatId) {
             fetchMessages();
         }
     }, [selectedChatId]);
+
+
+    async function handleSendMessage(body) {
+        const token = await getValidTeamleaderAccessToken();
+        if (!token) {
+            setChatError("Geen toegangstoken gevonden.");
+            return;
+        }
+
+        try {
+            await axios.post(
+                "https://api.focus.teamleader.eu/tickets.importMessage",
+                {
+                    id: selectedChatId,
+                    body: body,
+                    sent_by: {
+                        type: "user",
+                        id: user.id
+                    },
+                    sent_at: formatDateTimeWithOffset()
+                }
+                ,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+
+            await fetchMessages();
+
+        } catch (err) {
+            console.error("❌ Fout bij verzenden bericht:", err);
+            setChatError("Fout bij verzenden van het bericht.");
+        }
+    }
+
 
     return (
         <div className="chat-layout">
@@ -83,6 +125,7 @@ function Chat({selectedChatId}) {
             <div>
                 <ChatNewMessage
                     selectedChatId={selectedChatId}
+                    onSend={handleSendMessage}
                 />
             </div>
         </div>

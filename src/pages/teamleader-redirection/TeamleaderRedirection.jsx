@@ -6,8 +6,7 @@ const TeamleaderRedirect = () => {
     const navigate = useNavigate();
 
     const {
-        teamleaderDataIsLoaded,
-        setTeamleaderDataIsLoaded,
+        isLoading,
         fetchCompanyCustomFields,
         fetchTicketStatuses,
         error
@@ -25,11 +24,8 @@ const TeamleaderRedirect = () => {
             localStorage.setItem("teamleader_refresh_token", refreshToken);
             localStorage.setItem("teamleader_token_expires_at", expiresAt);
 
-            if (!teamleaderDataIsLoaded) {
-                fetchTicketStatuses(token)
-                fetchCompanyCustomFields(token)
-                setTeamleaderDataIsLoaded(true)
-            }
+            fetchTicketStatuses(token)
+            fetchCompanyCustomFields(token)
         } else {
             console.warn("⚠️ Token, refresh of expires_at ontbreekt in de redirect.");
         }
@@ -37,10 +33,10 @@ const TeamleaderRedirect = () => {
     }, []);
 
     useEffect(() => {
-        if (teamleaderDataIsLoaded && !error) {
+        if (!isLoading && !error) {
             navigate("/");
         }
-    }, [teamleaderDataIsLoaded, error])
+    }, [isLoading, error])
 
     return (error ? <p>{error}</p> :
             <p>Verwerken van Teamleader authenticatie...</p>

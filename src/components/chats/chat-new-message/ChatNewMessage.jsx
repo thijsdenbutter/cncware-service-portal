@@ -2,7 +2,7 @@ import './ChatNewMessage.css'
 import {useState} from "react";
 import Button from "../../buttons/button/Button.jsx";
 
-function ChatNewMessage({selectedChatId, onSend}) {
+function ChatNewMessage({onSend}) {
     const [message, setMessage] = useState("")
 
     function handleSend(e) {
@@ -11,7 +11,8 @@ function ChatNewMessage({selectedChatId, onSend}) {
         if (!trimmed) return;
 
         if (onSend) {
-            onSend(trimmed, selectedChatId);
+            onSend(trimmed);
+            console.log(trimmed);
         }
 
         setMessage("");
