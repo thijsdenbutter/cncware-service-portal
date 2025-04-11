@@ -16,8 +16,6 @@ function Home() {
     } = useContext(TeamleaderContext)
     const {
         filterData,
-        filterCompanyName,
-        filterStatus
     } = useContext(FilterContext)
 
     async function fetchBaseCompanies(token) {
@@ -45,7 +43,9 @@ function Home() {
 
         try {
             const [infoRes, contactRes, ticketsRes] = await Promise.all([
-                axios.post("https://api.focus.teamleader.eu/companies.info", {id: companyId}, {
+                axios.post("https://api.focus.teamleader.eu/companies.info", {
+                    id: companyId
+                }, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json"
@@ -115,7 +115,7 @@ function Home() {
             setCompanies(filtered);
         } catch (err) {
             console.error("❌ Fout bij ophalen bedrijven:", err);
-            setCompanyError("Fout bij ophalen bedrijven.");
+            setCompanyError("❌ Fout bij ophalen bedrijven.");
         }
     }
 

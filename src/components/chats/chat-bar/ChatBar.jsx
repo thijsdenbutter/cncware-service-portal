@@ -1,132 +1,149 @@
 import './ChatBar.css'
 import ChatItem from "../chat-item/ChatItem.jsx";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {FilterContext} from "../../../context/FilterContext.jsx";
+import axios from "axios";
 
 function ChatBar({selectedChatId, setSelectedChatId}) {
-    const dummyTickets = [
-        {
-            id: "ticket-001",
-            subject: "Installatie probleem",
-            status: "open",
-            contact: {
-                id: "contact-001",
-                name: "Jan Jansen"
-            },
-            company: {
-                id: "company-001",
-                name: "Bouwbedrijf De Hamer"
-            },
-            created_at: "2024-04-01T10:00:00+02:00",
-            messages: [
-                {
-                    id: "msg-001",
-                    sender: {type: "contact", id: "contact-001", name: "Jan Jansen"},
-                    text: "Hoi, ik krijg een foutmelding bij het installeren.",
-                    created_at: "2024-04-01T10:01:00+02:00"
+    const [chatError, setChatError] = useState(null);
+    const [tickets, setTickets] = useState([]);
+
+    async function fetchBaseTickets(token) {
+        const response = await axios.post(
+            "https://api.focus.teamleader.eu/tickets.list",
+            {
+                page: {
+                    size: 50,
+                    number: 1
                 }
-            ]
-        },
-        {
-            id: "ticket-002",
-            subject: "Vraag over factuur",
-            status: "gesloten",
-            contact: {
-                id: "contact-002",
-                name: "Lisa de Vries"
             },
-            company: {
-                id: "company-002",
-                name: "Interieurmakers BV"
-            },
-            created_at: "2024-04-02T14:00:00+02:00",
-            messages: [
-                {
-                    id: "msg-002",
-                    sender: {type: "contact", id: "contact-002", name: "Lisa de Vries"},
-                    text: "Waarom zijn er extra kosten op de factuur?",
-                    created_at: "2024-04-02T14:01:00+02:00"
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
                 }
-            ]
-        },
-        {
-            id: "ticket-003",
-            subject: "Licentie verlopen",
-            status: "open",
-            contact: {
-                id: "contact-003",
-                name: "Peter Klaassen"
-            },
-            company: {
-                id: "company-003",
-                name: "Meubelmakers & Co"
-            },
-            created_at: "2024-04-03T09:30:00+02:00",
-            messages: []
-        },
-        {
-            id: "ticket-004",
-            subject: "Aanpassing gebruikersrechten",
-            status: "gesloten",
-            contact: {
-                id: "contact-004",
-                name: "Sanne Bakker"
-            },
-            company: {
-                id: "company-004",
-                name: "Houtbewerkers Zuid"
-            },
-            created_at: "2024-04-04T11:15:00+02:00",
-            messages: []
-        },
-        {
-            id: "ticket-005",
-            subject: "Vraag over handleiding",
-            status: "open",
-            contact: {
-                id: "contact-005",
-                name: "Kevin van Dijk"
-            },
-            company: {
-                id: "company-005",
-                name: "Timmerbedrijf Noord"
-            },
-            created_at: "2024-04-05T08:45:00+02:00",
-            messages: []
-        },
-        {
-            id: "ticket-006",
-            subject: "Probleem met bestandsupload",
-            status: "gesloten",
-            contact: {
-                id: "contact-006",
-                name: "Anouk Veenstra"
-            },
-            company: {
-                id: "company-006",
-                name: "CNC Profs"
-            },
-            created_at: "2024-04-06T16:20:00+02:00",
-            messages: []
+            }
+        );
+        console.log("ticket lijst", response.data.data);
+        return response.data.data;
+    }
+
+    async function fetchContactInfo(contactId, token) {
+        const response = await axios.post(
+            "https://api.focus.teamleader.eu/contacts.info",
+            {id: contactId},
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+        console.log(response.data.data);
+        return response.data.data;
+    }
+
+    async function fetchCompanyInfo(companyId, token) {
+        const response = await axios.post(
+            "https://api.focus.teamleader.eu/companies.info",
+            {id: companyId},
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+        console.log(response.data.data);
+
+        return response.data.data;
+    }
+
+    async function fetchAndBuildTickets() {
+        const token = localStorage.getItem("teamleader_token");
+
+        if (!token) {
+            setChatError("Geen toegangstoken gevonden.");
+            return;
         }
-    ];
 
-    const {filterCompanyName, filterStatus} = useContext(FilterContext)
+        try {
+            const baseTickets = await fetchBaseTickets(token);
 
-    const filteredTickets = dummyTickets.filter((ticket) => {
-        const matchCostumer = ticket.company.name
-            .toLowerCase()
-            .includes(filterCompanyName.toLowerCase());
+            const enrichedTickets = await Promise.all(
+                baseTickets.map(async (ticket) => {
+                    const customer = ticket.customer;
+                    let customerInfo = null;
+                    let companyInfo = {id: null, name: "Onbekend bedrijf"};
 
-        const matchStatus =
-            filterStatus === "" || ticket.status === filterStatus;
+                    if (customer.type === "contact") {
+                        customerInfo = await fetchContactInfo(customer.id, token);
 
-        return matchCostumer && matchStatus;
-    });
+                        if (customerInfo.company?.id) {
+                            const fetchedCompany = await fetchCompanyInfo(customerInfo.company.id, token);
+                            companyInfo = {
+                                id: fetchedCompany.id,
+                                name: fetchedCompany.name
+                            };
+                        }
+
+                        return {
+                            id: ticket.id,
+                            subject: ticket.subject,
+                            customer: {
+                                id: customerInfo.id,
+                                name: `${customerInfo.first_name} ${customerInfo.last_name}`
+                            },
+                            company: companyInfo
+                        };
+                    }
+
+                    if (customer.type === "company") {
+                        customerInfo = await fetchCompanyInfo(customer.id, token);
+                        return {
+                            id: ticket.id,
+                            subject: ticket.subject,
+                            customer: {
+                                id: null,
+                                name: null
+                            },
+                            company: {
+                                id: customerInfo.id,
+                                name: customerInfo.name
+                            }
+                        };
+                    }
+
+                    return {
+                        id: ticket.id,
+                        subject: ticket.subject,
+                        customer: {
+                            id: customer.id,
+                            name: "Onbekend"
+                        },
+                        company: companyInfo
+                    };
+                })
+            );
+
+            setTickets(enrichedTickets);
+        } catch (err) {
+            console.error("❌ Fout bij ophalen/verrijken tickets:", err);
+            setChatError("Fout bij ophalen/verrijken van de chats.");
+        }
+    }
+
+    useEffect(() => {
+        fetchAndBuildTickets();
+    }, [])
+
+    if (chatError) return (
+        <p>{chatError}</p>
+    )
 
     return (
         <div className="chats-bar">
-            {filteredTickets.map((ticket) => {
+            {tickets.map((ticket) => {
                 const isSelected = selectedChatId === ticket.id;
                 return (
                     <ChatItem
