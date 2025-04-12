@@ -1,23 +1,105 @@
-import {createContext, useState} from "react";
+import {createContext, useEffect, useState} from "react";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 
 export const AuthContext = createContext({});
 
-export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null);
+export function AuthProvider({children}) {
+    const [authError, setAuthError] = useState(null);
+    const [authState, setAuthState] = useState({
+        user: null,
+        status: "pending",
+    });
 
-    const login = (userData) => {
-        setUser(userData);
-    };
+    function isTokenExpired(token) {
+        try {
+            const {exp} = jwtDecode(token);
+            const now = Date.now() / 1000; // in seconden
+            return exp < now;
+        } catch (err) {
+            console.error("❌ Token is ongeldig of niet decodeerbaar", err);
+            setAuthError("❌ Token is ongeldig of niet decodeerbaar");
+            return true; // behandel ongeldig token als verlopen
+        }
+    }
 
-    const logout = () => {
-        setUser(null);
-    };
+    useEffect(() => {
+        const token = localStorage.getItem("user_token");
 
-    const isAuthenticated = !!user;
+        async function fetchUserData() {
+            try {
+                const response = await axios.get(
+                    "https://frontend-educational-backend.herokuapp.com/api/user", {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                setAuthState({
+                    user: {
+                        username: response.data.username,
+                        email: response.data.email,
+                        id: response.data.id,
+                    },
+                    status: "done",
+                });
+            } catch (err) {
+                console.error("🔐 Gebruiker ophalen mislukt:", err);
+                setAuthError("🔐 Gebruiker ophalen mislukt");
+
+                localStorage.removeItem("user_token");
+                setAuthState({user: null, status: "done"});
+            }
+        }
+
+        if (token && !isTokenExpired(token)) {
+            fetchUserData();
+        } else {
+            setAuthState({user: null, status: "done"});
+        }
+
+    }, []);
+
+    async function login({email, password}) {
+        setAuthError(null);
+        try {
+            const response = await axios.post("https://frontend-educational-backend.herokuapp.com/api/auth/signin", {
+                username: email,
+                password,
+            });
+
+            localStorage.setItem("user_token", response.data.accessToken);
+
+            setAuthState({
+                user: {
+                    username: response.data.username,
+                    email: response.data.email,
+                    id: response.data.id,
+                },
+                status: "done",
+            });
+        } catch (err) {
+            console.error("❌ Login mislukt:", err);
+            setAuthError("❌ Login mislukt")
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("user_token");
+        setAuthState({user: null, status: "done"});
+    }
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
+        <AuthContext.Provider value={{
+            user: authState.user,
+            status: authState.status,
+            authError,
+            isAuthenticated: !!authState.user,
+            login,
+            logout,
+        }}>
             {children}
         </AuthContext.Provider>
     );
