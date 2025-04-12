@@ -14,7 +14,8 @@ function LoginForm() {
         logout: onLogout,
         register: onRegister,
         authError,
-        setAuthError
+        setAuthError,
+        status
     } = useContext(AuthContext);
 
     const {
@@ -28,10 +29,14 @@ function LoginForm() {
 
     const onSubmit = (data) => {
         if (isRegistering) {
+        const isAdmin = data.email.endsWith("@cncware.nl")
+        const role =  isAdmin ? ["admin"] : ["user"];
+
             onRegister({
                 email: data.email,
                 password: data.password,
-                company: data.company
+                company: data.company,
+                role,
             });
         } else {
             onLogin({
@@ -42,6 +47,10 @@ function LoginForm() {
     };
 
     const password = watch("password");
+
+    if (status === "pending") {
+        return <p>Authenticatie wordt geladen...</p>;
+    }
 
     if (user) {
         return (

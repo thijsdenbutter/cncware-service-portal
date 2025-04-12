@@ -1,6 +1,8 @@
-import {createContext, useEffect, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import {findOrCreateCompanyInTeamleader} from "../helpers/findOrCreateCompanyInTeamleader.js";
+import {TeamleaderContext} from "./TeamleaderContext.jsx";
 
 
 export const AuthContext = createContext({});
@@ -11,6 +13,8 @@ export function AuthProvider({children}) {
         user: null,
         status: "pending",
     });
+
+    const { getValidTeamleaderAccessToken } = useContext(TeamleaderContext)
 
     function isTokenExpired(token) {
         try {
@@ -86,14 +90,18 @@ export function AuthProvider({children}) {
         }
     }
 
-    async function register({ email, password, company }) {
+    async function register({ email, role, password, company }) {
         try {
+
+        const token = await getValidTeamleaderAccessToken();
+        const companyId = await findOrCreateCompanyInTeamleader(company, email, token);
+
             await axios.post("https://frontend-educational-backend.herokuapp.com/api/auth/signup", {
                 username: email,
                 email,
                 password,
-                role: ["user"],
-                info: company,
+                role,
+                info: companyId,
             });
 
             await login({ email, password });
