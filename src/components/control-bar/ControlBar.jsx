@@ -1,6 +1,6 @@
 import './ControlBar.css'
 import {NavLink} from "react-router-dom";
-import {useEffect, useRef, useState} from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import Divider from "../divider/Divider.jsx";
 import ButtonStart from "../buttons/button-start/ButtonStart.jsx";
 import ButtonStop from "../buttons/button-stop/ButtonStop.jsx";
@@ -9,11 +9,14 @@ import ButtonRegister from "../buttons/button-register/ButtonRegister.jsx";
 import FilterCompanyName from "../filters/filter-company-name/FilterCompanyName.jsx";
 import FilterStatus from "../filters/filter-status/FilterStatus.jsx";
 import Button from "../buttons/button/Button.jsx";
+import {AuthContext} from "../../context/AuthContext.jsx";
 
 function ControlBar() {
     const [seconds, setSeconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const intervalRef = useRef(null);
+
+    const { user } = useContext(AuthContext)
 
     useEffect(() => {
         const interval = intervalRef.current;
@@ -36,7 +39,7 @@ const ConnectToTeamleader = () => {
                 <FilterStatus/>
             </div>
             <div className="control-bar-inner-container">
-                <NavLink to="/login">Login</NavLink>
+                <NavLink to="/login">{!user ? "Inloggen" : "Uitloggen"}</NavLink>
                 <NavLink to="/nieuwe-chat">Nieuwe chat</NavLink>
                 <Divider direction="vertical"/>
                 <Timer seconds={seconds}/>

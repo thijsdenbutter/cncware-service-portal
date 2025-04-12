@@ -2,10 +2,20 @@ import './LoginForm.css'
 import Input from "../../components/input/Input.jsx";
 import Button from "../../components/buttons/button/Button.jsx";
 import {useForm} from "react-hook-form";
-import {useState} from "react";
+import {useContext, useState} from "react";
+import {AuthContext} from "../../context/AuthContext.jsx";
 
-function LoginForm({onLogin, onRegister}) {
+function LoginForm() {
     const [isRegistering, setIsRegistering] = useState(false);
+
+    const {
+        user,
+        login: onLogin,
+        logout: onLogout,
+        register: onRegister,
+        authError,
+        setAuthError
+    } = useContext(AuthContext);
 
     const {
         register,
@@ -32,6 +42,17 @@ function LoginForm({onLogin, onRegister}) {
     };
 
     const password = watch("password");
+
+    if (user) {
+        return (
+            <div className="login-form">
+                <p>Je bent ingelogd als <strong>{user.username}</strong></p>
+                <Button onClick={onLogout} styling="default">
+                    Uitloggen
+                </Button>
+            </div>
+        )
+    }
 
     return (
         <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
@@ -104,16 +125,25 @@ function LoginForm({onLogin, onRegister}) {
                 {isRegistering ? "Registreer" : "Log in"}
             </Button>
 
+            {authError && <p className="form-error">{authError}</p>}
+
             <p className="form-toggle">
                 {isRegistering ? (
                     <>
                         Al een account?{" "}
-                        <span onClick={() => setIsRegistering(false)}>Log in</span>
+                        <span onClick={() => {
+                            setIsRegistering(false)
+                            setAuthError(null)
+                        }}>Log in</span>
+
                     </>
                 ) : (
                     <>
                         Nog geen account?{" "}
-                        <span onClick={() => setIsRegistering(true)}>Registreer</span>
+                        <span onClick={() => {
+                            setIsRegistering(true)
+                            setAuthError(null)
+                        }}>Registreer</span>
                     </>
                 )}
             </p>

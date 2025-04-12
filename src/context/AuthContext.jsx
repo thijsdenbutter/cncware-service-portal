@@ -86,6 +86,24 @@ export function AuthProvider({children}) {
         }
     }
 
+    async function register({ email, password, company }) {
+        try {
+            await axios.post("https://frontend-educational-backend.herokuapp.com/api/auth/signup", {
+                username: email,
+                email,
+                password,
+                role: ["user"],
+                info: company,
+            });
+
+            await login({ email, password });
+
+        } catch (err) {
+            console.error("❌ Registratie mislukt:", err);
+            setAuthError("❌ Registratie mislukt");
+        }
+    }
+
     function logout() {
         localStorage.removeItem("user_token");
         setAuthState({user: null, status: "done"});
@@ -96,8 +114,10 @@ export function AuthProvider({children}) {
             user: authState.user,
             status: authState.status,
             authError,
+            setAuthError,
             isAuthenticated: !!authState.user,
             login,
+            register,
             logout,
         }}>
             {children}
