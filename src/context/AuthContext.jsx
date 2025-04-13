@@ -41,7 +41,7 @@ export function AuthProvider({children}) {
                     }
                 );
 
-                console.log(response);
+                console.log("user info response: ", response);
 
                 const isAdmin = response.data.email.endsWith("@cncware.nl");
 
@@ -51,6 +51,7 @@ export function AuthProvider({children}) {
                         email: response.data.email,
                         id: response.data.id,
                         role: isAdmin ? "admin" : "user",
+                        info: response.data.info,
                     },
                     status: "done",
                 });
@@ -85,7 +86,7 @@ export function AuthProvider({children}) {
 
             localStorage.setItem("user_token", response.data.accessToken);
 
-            console.log(response.data);
+            console.log("inlog response: ", response.data);
 
             const isAdmin = response.data.email.endsWith("@cncware.nl");
 
@@ -95,6 +96,7 @@ export function AuthProvider({children}) {
                     email: response.data.email,
                     id: response.data.id,
                     role: isAdmin ? "admin" : "user",
+                    info: response.data.info,
                 },
                 status: "done",
             });
@@ -113,11 +115,11 @@ export function AuthProvider({children}) {
         }
     }
 
-    async function register({ email, password, company }) {
+    async function register({ email, password, company }, navigate) {
         try {
 
-        const token = await getValidTeamleaderAccessToken();
-        const companyId = await findOrCreateCompanyInTeamleader(company, email, token);
+        const teamleaderToken = await getValidTeamleaderAccessToken();
+        const companyId = await findOrCreateCompanyInTeamleader(company, email, teamleaderToken);
 
             const isAdmin = email.endsWith("@cncware.nl");
 
@@ -126,19 +128,40 @@ export function AuthProvider({children}) {
                 email,
                 password,
                 role: isAdmin ? ["admin"] : ["user"],
-                info: companyId,
-            };
-
-            console.log("📤 Registratie payload:", payload);
+            }
+            console.log(payload)
 
             const response = await axios.post(
                 "https://frontend-educational-backend.herokuapp.com/api/auth/signup",
-                payload
+                payload,
+
             );
 
             console.log("✅ Backend response:", response);
 
-            await login({ email, password });
+            await login({ email, password }, navigate);
+
+            const userToken = localStorage.getItem("user_token");
+
+            const responsePutInfo = await axios.put("https://frontend-educational-backend.herokuapp.com/api/user", {
+                info: companyId,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                }
+            });
+            console.log(responsePutInfo);
+
+            setAuthState({
+                user: {
+                    username: responsePutInfo.data.username,
+                    email: responsePutInfo.data.email,
+                    id: responsePutInfo.data.id,
+                    role: isAdmin ? "admin" : "user",
+                    info: responsePutInfo.data.info,
+                },
+                status: "done",
+            });
 
         } catch (err) {
             console.error("❌ Registratie mislukt:", err);

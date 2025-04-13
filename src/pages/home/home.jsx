@@ -4,7 +4,7 @@ function Home() {
     return (
         <div className="home-layout">
             <h1 className="home-title">
-                CNCware Service Portaal
+                CNCware service portaal
             </h1>
         </div>
     )

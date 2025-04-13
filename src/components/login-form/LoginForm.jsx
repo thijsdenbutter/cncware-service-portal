@@ -1,5 +1,5 @@
 import './LoginForm.css'
-import Input from "../../components/input/Input.jsx";
+import Input from "../inputs/input/Input.jsx";
 import Button from "../../components/buttons/button/Button.jsx";
 import {useForm} from "react-hook-form";
 import {useContext, useState} from "react";
@@ -35,7 +35,7 @@ function LoginForm() {
                 email: data.email,
                 password: data.password,
                 company: data.company,
-            });
+            }, navigate);
         } else {
             onLogin({
                 email: data.email,

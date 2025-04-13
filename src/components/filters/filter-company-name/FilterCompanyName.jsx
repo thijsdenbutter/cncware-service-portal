@@ -1,4 +1,4 @@
-import Input from "../../input/Input.jsx";
+import Input from "../../inputs/input/Input.jsx";
 import {useContext} from "react";
 import {FilterContext} from "../../../context/FilterContext.jsx";
 
@@ -7,7 +7,7 @@ function FilterCompanyName() {
 
     return (
         <Input
-            placeholder="Input op bedrijfsnaam"
+            placeholder="Filter op bedrijfsnaam"
             value={filterCompanyName}
             onChange={(e) => {
                 setFilterCompanyName(e.target.value)
