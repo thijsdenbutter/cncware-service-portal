@@ -1,4 +1,4 @@
-.filter-input {
+.input-select-default {
     background-color: var(--input-bg);
     color: var(--text-main);
     border: 1px solid var(--input-border);
@@ -10,6 +10,6 @@
     min-width: 10rem;
 }
 
-.filter-input.placeholder-active {
+.input-select-default.placeholder-active {
     color: var(--text-muted);
 }

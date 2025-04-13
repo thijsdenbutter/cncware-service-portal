@@ -1,4 +1,4 @@
-import './Home.css'
+import './Companies.css'
 import CostumerTile from "../../components/costumer-tile/CostumerTile.jsx";
 import {useContext, useEffect, useState} from "react";
 import axios from "axios";
@@ -6,7 +6,7 @@ import valueOfCustomField from "../../helpers/valueOfCustomField.js";
 import {TeamleaderContext} from "../../context/TeamleaderContext.jsx";
 import {FilterContext} from "../../context/FilterContext.jsx";
 
-function Home() {
+function Companies() {
     const [companies, setCompanies] = useState([]);
     const [companyError, setCompanyError] = useState(null);
     const {
@@ -160,4 +160,4 @@ function Home() {
     )
 }
 
-export default Home
+export default Companies

@@ -1,9 +1,9 @@
-import './FilterSelect.css'
+import './InputSelect.css'
 
-function FilterSelect({ value, onChange, options, placeholder }) {
+function InputSelect({ value, onChange, options, placeholder }) {
     return (
         <select
-            className={`filter-input ${value === "" ? "placeholder-active" : ""}`}
+            className={`input-select-default ${value === "" ? "placeholder-active" : ""}`}
             value={value}
             onChange={onChange}>
             <option value="">{placeholder}</option>
@@ -18,4 +18,4 @@ function FilterSelect({ value, onChange, options, placeholder }) {
     );
 }
 
-export default FilterSelect;
+export default InputSelect;

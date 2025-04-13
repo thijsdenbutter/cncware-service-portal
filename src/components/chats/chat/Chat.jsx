@@ -79,8 +79,8 @@ function Chat({selectedChatId}) {
                     id: selectedChatId,
                     body: body,
                     sent_by: {
-                        type: "user",
-                        id: user.id
+                        type: "company",
+                        id: user.info
                     },
                     sent_at: formatDateTimeWithOffset()
                 }

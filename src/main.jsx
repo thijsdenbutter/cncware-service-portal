@@ -7,13 +7,13 @@ import {AuthProvider} from "./context/AuthContext.jsx";
 import {TeamleaderProvider} from "./context/TeamleaderContext.jsx";
 
 createRoot(document.getElementById('root')).render(
-    <AuthProvider>
-        <Router>
-            <TeamleaderProvider>
+    <TeamleaderProvider>
+        <AuthProvider>
+            <Router>
                 <FilterProvider>
                     <App/>
                 </FilterProvider>
-            </TeamleaderProvider>
-        </Router>
-    </AuthProvider>
+            </Router>
+        </AuthProvider>
+    </TeamleaderProvider>
 )

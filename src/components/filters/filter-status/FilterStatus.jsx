@@ -1,6 +1,6 @@
 import {useContext} from "react";
 import {FilterContext} from "../../../context/FilterContext.jsx";
-import FilterSelect from "../filter-select/FilterSelect.jsx";
+import InputSelect from "../../inputs/input-select/InputSelect.jsx";
 import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
 
 function FilterStatus() {
@@ -13,7 +13,7 @@ function FilterStatus() {
     })) : ""
 
     return (
-        <FilterSelect
+        <InputSelect
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
             options={options}

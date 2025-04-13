@@ -4,6 +4,7 @@ import {useContext, useEffect, useState} from "react";
 import {FilterContext} from "../../../context/FilterContext.jsx";
 import axios from "axios";
 import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
+import {AuthContext} from "../../../context/AuthContext.jsx";
 
 function ChatBar({selectedChatId, setSelectedChatId}) {
     const [chatsError, setChatsError] = useState(null);
@@ -15,16 +16,35 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
     const {
         getValidTeamleaderAccessToken
     } = useContext(TeamleaderContext);
+    const {
+        user
+    } = useContext(AuthContext)
 
     async function fetchBaseTickets(token) {
+        const isAdmin = user?.role === "admin"
+
+        console.log(user.role);
+        const requestBody = {
+            page: {
+                size: 50,
+                number: 1,
+            },
+        };
+
+        if (!isAdmin) {
+            requestBody.filter = {
+                relates_to: {
+                    type: "company",
+                    id: user.info,
+                },
+            };
+        }
+
+        console.log(requestBody);
+
         const response = await axios.post(
             "https://api.focus.teamleader.eu/tickets.list",
-            {
-                page: {
-                    size: 50,
-                    number: 1
-                }
-            },
+            requestBody,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
