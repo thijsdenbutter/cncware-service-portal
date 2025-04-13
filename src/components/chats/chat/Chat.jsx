@@ -7,7 +7,7 @@ import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
 import {AuthContext} from "../../../context/AuthContext.jsx";
 import formatDateTimeWithOffset from "../../../helpers/formatDateTimeWithOffset.js";
 
-function Chat({selectedChatId}) {
+function Chat({ selectedChat, setSelectedChat }) {
     const [chatError, setChatError] = useState(null);
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ function Chat({selectedChatId}) {
                 const response = await axios.post(
                     "https://api.focus.teamleader.eu/tickets.listMessages",
                     {
-                        id: selectedChatId,
+                        id: selectedChat.id,
                         filter: {
                             type: "customer",
                         },
@@ -57,12 +57,48 @@ function Chat({selectedChatId}) {
             }
         }
 
+    async function fetchTicketInfo() {
+        const token = await getValidTeamleaderAccessToken();
+
+        if (!token) {
+            setChatError("Geen toegangstoken gevonden.");
+            return;
+        }
+
+        try {
+            const response = await axios.post(
+                "https://api.focus.teamleader.eu/tickets.info",
+                { id: selectedChat.id },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                }
+            );
+
+            const { description } = response.data.data;
+
+            setSelectedChat((prev) => ({
+                ...prev,
+                description: description
+            }));
+
+        } catch (err) {
+            console.error("❌ Fout bij ophalen ticket info:", err);
+            setChatError("❌ Fout bij ophalen ticketbeschrijving.");
+        }
+    }
+
     useEffect(() => {
 
-        if (selectedChatId) {
+        if (selectedChat) {
             fetchMessages();
+            fetchTicketInfo();
         }
-    }, [selectedChatId]);
+    }, [selectedChat.id]);
+
+
 
 
     async function handleSendMessage(body) {
@@ -76,7 +112,7 @@ function Chat({selectedChatId}) {
             await axios.post(
                 "https://api.focus.teamleader.eu/tickets.importMessage",
                 {
-                    id: selectedChatId,
+                    id: selectedChat.id,
                     body: body,
                     sent_by: {
                         type: "company",
@@ -124,7 +160,6 @@ function Chat({selectedChatId}) {
             )}
             <div>
                 <ChatNewMessage
-                    selectedChatId={selectedChatId}
                     onSend={handleSendMessage}
                 />
             </div>
