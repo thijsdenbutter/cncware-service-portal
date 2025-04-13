@@ -3,7 +3,7 @@ import './InputSelect.css'
 function InputSelect({ value, onChange, options, placeholder }) {
     return (
         <select
-            className={`input-select-default ${value === "" ? "placeholder-active" : ""}`}
+            className={`input-select ${value === "" ? "placeholder-active" : ""}`}
             value={value}
             onChange={onChange}>
             <option value="">{placeholder}</option>

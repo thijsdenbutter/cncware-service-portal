@@ -1,0 +1,25 @@
+
+.new-chat-form {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 20rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    border: 1px solid var(--card-border);
+}
+
+.new-chat-form label {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.form-error {
+    color: var(--error);
+    font-size: var(--font-size-sm);
+    margin: -0.25rem 0 0.5rem;
+}

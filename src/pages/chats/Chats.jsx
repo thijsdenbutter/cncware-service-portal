@@ -1,20 +1,26 @@
 import './Chats.css'
 import ChatBar from "../../components/chats/chat-bar/ChatBar.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Chat from "../../components/chats/chat/Chat.jsx";
 
 function Chats() {
-    const [selectedChatId, setSelectedChatId] = useState(null);
+    const [selectedChat, setSelectedChat] = useState({
+        id: null,
+        description: null
+    });
+
+    useEffect(() => {console.log(selectedChat)},[selectedChat]);
 
     return (
         <div className="chats-layout">
             <ChatBar
-                selectedChatId={selectedChatId}
-                setSelectedChatId={setSelectedChatId}
+                selectedChat={selectedChat}
+                setSelectedChat={setSelectedChat}
             />
-            {selectedChatId && (
+            {selectedChat.id && (
                 <Chat
-                    selectedChatId={selectedChatId}
+                    selectedChat={selectedChat}
+                    setSelectedChat={setSelectedChat}
                 />
             )}
         </div>

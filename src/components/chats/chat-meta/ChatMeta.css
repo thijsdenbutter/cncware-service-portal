@@ -18,3 +18,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.chat-meta-value.multiline {
+    white-space: pre-wrap;
+    overflow: visible;
+    text-overflow: unset;
+    word-break: break-word;
+}

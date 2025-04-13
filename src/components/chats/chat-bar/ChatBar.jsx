@@ -6,7 +6,7 @@ import axios from "axios";
 import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
 import {AuthContext} from "../../../context/AuthContext.jsx";
 
-function ChatBar({selectedChatId, setSelectedChatId}) {
+function ChatBar({selectedChat, setSelectedChat}) {
     const [chatsError, setChatsError] = useState(null);
     const [tickets, setTickets] = useState([]);
     const {
@@ -94,6 +94,8 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
         try {
             const baseTickets = await fetchBaseTickets(token);
 
+            console.log(baseTickets);
+
             const enrichedTickets = await Promise.all(
                 baseTickets.map(async (ticket) => {
                     const customer = ticket.customer;
@@ -176,14 +178,15 @@ function ChatBar({selectedChatId, setSelectedChatId}) {
 
     return (
         <div className="chats-bar">
-            {filteredTickets.map((ticket) => {
-                const isSelected = selectedChatId === ticket.id;
+            {filteredTickets.reverse().map((ticket) => {
+                const isSelected = selectedChat.id === ticket.id;
                 return (
                     <ChatItem
                         key={ticket.id}
                         ticket={ticket}
                         isSelected={isSelected}
-                        onClick={() => setSelectedChatId(ticket.id)}
+                        selectedChat={selectedChat}
+                        onClick={() => setSelectedChat({id:ticket.id})}
                     />
                 )
             })}
