@@ -4,9 +4,11 @@ import Button from "../../components/buttons/button/Button.jsx";
 import {useForm} from "react-hook-form";
 import {useContext, useState} from "react";
 import {AuthContext} from "../../context/AuthContext.jsx";
+import {useNavigate} from "react-router-dom";
 
 function LoginForm() {
     const [isRegistering, setIsRegistering] = useState(false);
+    const navigate = useNavigate();
 
     const {
         user,
@@ -29,20 +31,16 @@ function LoginForm() {
 
     const onSubmit = (data) => {
         if (isRegistering) {
-        const isAdmin = data.email.endsWith("@cncware.nl")
-        const role =  isAdmin ? ["admin"] : ["user"];
-
             onRegister({
                 email: data.email,
                 password: data.password,
                 company: data.company,
-                role,
             });
         } else {
             onLogin({
                 email: data.email,
                 password: data.password
-            });
+            }, navigate);
         }
     };
 
@@ -56,7 +54,7 @@ function LoginForm() {
         return (
             <div className="login-form">
                 <p>Je bent ingelogd als <strong>{user.username}</strong></p>
-                <Button onClick={onLogout} styling="default">
+                <Button onClick={() => onLogout(navigate)} styling="default">
                     Uitloggen
                 </Button>
             </div>

@@ -16,7 +16,7 @@ function ControlBar() {
     const [isRunning, setIsRunning] = useState(false);
     const intervalRef = useRef(null);
 
-    const { user } = useContext(AuthContext)
+    const {user, isAuthenticated} = useContext(AuthContext)
 
     useEffect(() => {
         const interval = intervalRef.current;
@@ -25,31 +25,31 @@ function ControlBar() {
         };
     }, []);
 
-const ConnectToTeamleader = () => {
-    window.location.href = "http://localhost:3001/login";
-    }
-
-
-
-
     return (
         <div className="control-bar-outer-container">
             <div className="control-bar-inner-container">
-                <FilterCompanyName/>
-                <FilterStatus/>
+                {isAuthenticated &&
+                    <>
+                        <FilterCompanyName/>
+                        <FilterStatus/>
+                    </>
+                }
             </div>
             <div className="control-bar-inner-container">
                 <NavLink to="/login">{!user ? "Inloggen" : "Uitloggen"}</NavLink>
-                <NavLink to="/nieuwe-chat">Nieuwe chat</NavLink>
-                <Divider direction="vertical"/>
-                <Timer seconds={seconds}/>
-                <ButtonRegister intervalRef={intervalRef} setIsRunning={setIsRunning} isRunning={isRunning} setSeconds={setSeconds}/>
-                <ButtonStop setIsRunning={setIsRunning} intervalRef={intervalRef}/>
-                <ButtonStart intervalRef={intervalRef} setIsRunning={setIsRunning} setSeconds={setSeconds}/>
-                <Divider direction="vertical"/>
-                <Button onClick={() => {ConnectToTeamleader()}} styling="default">
-                    Verbind met teamleader
-                </Button>
+                {isAuthenticated &&
+                <NavLink to="/nieuwe-chat">Nieuwe chat</NavLink>}
+                {user?.role === "admin" &&
+                    <>
+                        <Divider direction="vertical"/>
+                        <Timer seconds={seconds}/>
+                        <ButtonRegister intervalRef={intervalRef} setIsRunning={setIsRunning} isRunning={isRunning}
+                                        setSeconds={setSeconds}/>
+                        <ButtonStop setIsRunning={setIsRunning} intervalRef={intervalRef}/>
+                        <ButtonStart intervalRef={intervalRef} setIsRunning={setIsRunning} setSeconds={setSeconds}/>
+                        <Divider direction="vertical"/>
+                    </>
+                }
             </div>
         </div>
     )

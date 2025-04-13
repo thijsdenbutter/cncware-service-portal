@@ -14,7 +14,7 @@ export function AuthProvider({children}) {
         status: "pending",
     });
 
-    const { getValidTeamleaderAccessToken } = useContext(TeamleaderContext)
+    const { getValidTeamleaderAccessToken, fetchTicketStatuses, fetchCompanyCustomFields } = useContext(TeamleaderContext)
 
     function isTokenExpired(token) {
         try {
@@ -24,7 +24,7 @@ export function AuthProvider({children}) {
         } catch (err) {
             console.error("❌ Token is ongeldig of niet decodeerbaar", err);
             setAuthError("❌ Token is ongeldig of niet decodeerbaar");
-            return true; // behandel ongeldig token als verlopen
+            return true;
         }
     }
 
@@ -41,11 +41,16 @@ export function AuthProvider({children}) {
                     }
                 );
 
+                console.log(response);
+
+                const isAdmin = response.data.email.endsWith("@cncware.nl");
+
                 setAuthState({
                     user: {
                         username: response.data.username,
                         email: response.data.email,
                         id: response.data.id,
+                        role: isAdmin ? "admin" : "user",
                     },
                     status: "done",
                 });
@@ -66,7 +71,11 @@ export function AuthProvider({children}) {
 
     }, []);
 
-    async function login({email, password}) {
+    useEffect(() => {
+        console.log(authState)
+    }, [authState]);
+
+    async function login({email, password}, navigate) {
         setAuthError(null);
         try {
             const response = await axios.post("https://frontend-educational-backend.herokuapp.com/api/auth/signin", {
@@ -76,33 +85,58 @@ export function AuthProvider({children}) {
 
             localStorage.setItem("user_token", response.data.accessToken);
 
+            console.log(response.data);
+
+            const isAdmin = response.data.email.endsWith("@cncware.nl");
+
             setAuthState({
                 user: {
                     username: response.data.username,
                     email: response.data.email,
                     id: response.data.id,
+                    role: isAdmin ? "admin" : "user",
                 },
                 status: "done",
             });
+
+            const teamleaderToken = await getValidTeamleaderAccessToken();
+            if (teamleaderToken) {
+                await fetchTicketStatuses(teamleaderToken);
+                await fetchCompanyCustomFields(teamleaderToken);
+            }
+
+            navigate("/")
+
         } catch (err) {
             console.error("❌ Login mislukt:", err);
             setAuthError("❌ Login mislukt")
         }
     }
 
-    async function register({ email, role, password, company }) {
+    async function register({ email, password, company }) {
         try {
 
         const token = await getValidTeamleaderAccessToken();
         const companyId = await findOrCreateCompanyInTeamleader(company, email, token);
 
-            await axios.post("https://frontend-educational-backend.herokuapp.com/api/auth/signup", {
+            const isAdmin = email.endsWith("@cncware.nl");
+
+            const payload = {
                 username: email,
                 email,
                 password,
-                role,
+                role: isAdmin ? ["admin"] : ["user"],
                 info: companyId,
-            });
+            };
+
+            console.log("📤 Registratie payload:", payload);
+
+            const response = await axios.post(
+                "https://frontend-educational-backend.herokuapp.com/api/auth/signup",
+                payload
+            );
+
+            console.log("✅ Backend response:", response);
 
             await login({ email, password });
 
@@ -112,10 +146,13 @@ export function AuthProvider({children}) {
         }
     }
 
-    function logout() {
-        localStorage.removeItem("user_token");
+    function logout(navigate) {
+        localStorage.clear();
         setAuthState({user: null, status: "done"});
+        navigate("/");
     }
+
+
 
     return (
         <AuthContext.Provider value={{
