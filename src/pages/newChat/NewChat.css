@@ -1,0 +1,9 @@
+.new-chat-form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    overflow-y: auto;
+    min-height: 100%;
+    width: 100%;
+}

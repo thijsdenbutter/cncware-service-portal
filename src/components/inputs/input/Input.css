@@ -9,6 +9,11 @@
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     height: 2.5rem;
     min-width: 10rem;
+    width: auto;
+}
+
+.input-default.full-width {
+    width: 100%;
 }
 
 .input-default:focus {

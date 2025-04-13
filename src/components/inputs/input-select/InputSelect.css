@@ -1,15 +1,17 @@
-.input-select-default {
+.input-select {
     background-color: var(--input-bg);
-    color: var(--text-main);
+    color: var(--text-muted);
     border: 1px solid var(--input-border);
     border-radius: 0.5rem;
     padding: 0.5rem 0.75rem;
     font-size: var(--font-size-base);
     outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     height: 2.5rem;
     min-width: 10rem;
 }
 
-.input-select-default.placeholder-active {
-    color: var(--text-muted);
+.input-select:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 2px rgba(0, 198, 198, 0.3);
 }
