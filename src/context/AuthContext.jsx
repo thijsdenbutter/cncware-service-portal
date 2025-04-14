@@ -1,9 +1,8 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
-import {findOrCreateCompanyInTeamleader} from "../helpers/findOrCreateCompanyInTeamleader.js";
+import {findOrCreateCompanyInTeamleader} from "../helpers/teamleader/findOrCreateCompanyInTeamleader.js";
 import {TeamleaderContext} from "./TeamleaderContext.jsx";
-
 
 export const AuthContext = createContext({});
 
@@ -174,8 +173,6 @@ export function AuthProvider({children}) {
         setAuthState({user: null, status: "done"});
         navigate("/");
     }
-
-
 
     return (
         <AuthContext.Provider value={{

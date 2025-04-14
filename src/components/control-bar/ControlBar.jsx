@@ -30,7 +30,8 @@ function ControlBar() {
             <div className="control-bar-inner-container">
                 {isAuthenticated &&
                     <>
-                        <FilterCompanyName/>
+                    {user?.role === "admin" &&
+                        <FilterCompanyName/>}
                         <FilterStatus/>
                     </>
                 }

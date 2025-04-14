@@ -1,5 +1,7 @@
 import {createContext, useState} from "react";
 import axios from "axios";
+import {fetchCustomFields} from "../helpers/teamleader/fetchCustomFields.js";
+import { fetchTicketStatuses as fetchTicketStatusesFromAPI } from "../helpers/teamleader/fetchTicketStatuses.js";
 
 
 export const TeamleaderContext = createContext({});
@@ -45,24 +47,8 @@ export function TeamleaderProvider({children}) {
     async function fetchTicketStatuses(token) {
         setIsLoading(true);
         try {
-            const statusesResponse = await axios.post(
-                "https://api.focus.teamleader.eu/ticketStatus.list",
-                {}, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
-            )
-            const listOfStatuses = statusesResponse.data.data;
-
-            const statusList = listOfStatuses.map(status => ({
-                id: status.id,
-                name: status.status === "custom" ? status.label : status.status,
-            }))
-
+            const statusList = await fetchTicketStatusesFromAPI(token);
             setTicketStatuses(statusList);
-
         } catch (error) {
             setError("❌ Fout bij ophalen ticket statussen");
             console.error("❌ Fout bij ophalen ticket statussen:", error);
@@ -71,34 +57,18 @@ export function TeamleaderProvider({children}) {
         }
     }
 
-    async function fetchCustomFields(token, contextFilter) {
-        setIsLoading(true)
-        try {
-            const response = await axios.post(
-                "https://api.focus.teamleader.eu/customFieldDefinitions.list",
-                {
-                    filter: {context: contextFilter}
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }
-            )
-            return (response.data.data);
-
-        } catch (error) {
-            setError(`❌ Fout bij ophalen customfield: ${contextFilter}`)
-            console.error(`❌ Fout bij ophalen customfield:, ${contextFilter}:`, error);
-        } finally {
-            setIsLoading(false)
-        }
-    }
-
     async function fetchCompanyCustomFields(token) {
-        const result = await fetchCustomFields(token, "company");
-        if (result) {
-            setCustomFieldsCompanies(result);
+        setIsLoading(true);
+        try {
+            const result = await fetchCustomFields(token, "company");
+            if (result) {
+                setCustomFieldsCompanies(result);
+            }
+        } catch (error) {
+            console.error("❌ Fout bij ophalen customfields:", error);
+            setError("❌ Fout bij ophalen customfields: company");
+        } finally {
+            setIsLoading(false);
         }
     }
 

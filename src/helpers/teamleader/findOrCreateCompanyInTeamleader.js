@@ -28,7 +28,7 @@ export async function findOrCreateCompanyInTeamleader(companyName, email, token)
         );
 
         if (match) {
-            return match.id; // ✅ Bestaat al → gebruiken
+            return match.id;
         }
 
 
