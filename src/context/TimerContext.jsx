@@ -30,6 +30,15 @@ export function TimerProvider({ children }) {
         setIsRunning(false);
     }
 
+    function resetTimer() {
+        pauseTimer();
+        setSeconds(0);
+    }
+
+    function registerTime() {
+
+    }
+
 
 
     return (
