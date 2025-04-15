@@ -10,10 +10,22 @@ export function TimerProvider({ children }) {
 
     const intervalRef = useRef(null);
 
+    function startTimer() {
+        if (intervalRef.current !== null) return;
+
+        intervalRef.current = setInterval(() => {
+            setSeconds(prev => prev + 1);
+        }, 1000);
+
+        setIsRunning(true);
+    }
+
     return (
         <TimerContext.Provider
             value={{
                 seconds,
+                startTimer,
+                setSeconds,
                 selectedChat,
                 setSelectedChat
             }}

@@ -12,7 +12,6 @@ import Button from "../buttons/button/Button.jsx";
 import {AuthContext} from "../../context/AuthContext.jsx";
 
 function ControlBar() {
-    const [seconds, setSeconds] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const intervalRef = useRef(null);
 
@@ -43,11 +42,10 @@ function ControlBar() {
                 {user?.role === "admin" &&
                     <>
                         <Divider direction="vertical"/>
-                        <Timer seconds={seconds}/>
-                        <ButtonRegister intervalRef={intervalRef} setIsRunning={setIsRunning} isRunning={isRunning}
-                                        setSeconds={setSeconds}/>
+                        <Timer/>
+                        <ButtonRegister intervalRef={intervalRef} setIsRunning={setIsRunning} isRunning={isRunning}/>
                         <ButtonStop setIsRunning={setIsRunning} intervalRef={intervalRef}/>
-                        <ButtonStart intervalRef={intervalRef} setIsRunning={setIsRunning} setSeconds={setSeconds}/>
+                        <ButtonStart/>
                         <Divider direction="vertical"/>
                     </>
                 }

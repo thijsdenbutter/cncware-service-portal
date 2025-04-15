@@ -1,16 +1,12 @@
 import Button from "../button/Button.jsx";
+import {useContext} from "react";
+import {TimerContext} from "../../../context/TimerContext.jsx";
 
-function ButtonStart({intervalRef, setSeconds, setIsRunning}) {
+function ButtonStart() {
 
-    const startTimer = () => {
-        if (intervalRef.current !== null) return;
-
-        intervalRef.current = setInterval(() => {
-            setSeconds(prev => prev + 1);
-        }, 1000);
-
-        setIsRunning(true);
-    };
+    const {
+        startTimer
+    } = useContext(TimerContext);
 
     return (
         <Button onClick={startTimer} styling="default">Start</Button>

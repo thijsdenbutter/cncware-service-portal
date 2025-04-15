@@ -1,9 +1,15 @@
 import Button from "../button/Button.jsx";
+import {useContext} from "react";
+import {TimerContext} from "../../../context/TimerContext.jsx";
 
-function ButtonRegister({intervalRef, setIsRunning, isRunning, setSeconds}) {
+function ButtonRegister({intervalRef, setIsRunning, isRunning}) {
+
+    const {
+        setSeconds
+    } = useContext(TimerContext);
 
     const registerTimer = () => {
-        if (isRunning){
+        if (isRunning) {
             clearInterval(intervalRef.current);
             intervalRef.current = null;
             setIsRunning(false);
