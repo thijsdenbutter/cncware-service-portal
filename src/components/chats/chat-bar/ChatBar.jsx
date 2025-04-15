@@ -5,13 +5,13 @@ import {FilterContext} from "../../../context/FilterContext.jsx";
 import axios from "axios";
 import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
 import {AuthContext} from "../../../context/AuthContext.jsx";
+import {TimerContext} from "../../../context/TimerContext.jsx";
 
-function ChatBar({selectedChat, setSelectedChat}) {
+function ChatBar() {
     const [chatsError, setChatsError] = useState(null);
     const [tickets, setTickets] = useState([]);
     const {
         filterData,
-
     } = useContext(FilterContext)
     const {
         getValidTeamleaderAccessToken
@@ -19,6 +19,9 @@ function ChatBar({selectedChat, setSelectedChat}) {
     const {
         user
     } = useContext(AuthContext)
+    const {
+        setSelectedChat
+    } = useContext(TimerContext)
 
     async function fetchBaseTickets(token) {
         const isAdmin = user?.role === "admin"
@@ -179,13 +182,10 @@ function ChatBar({selectedChat, setSelectedChat}) {
     return (
         <div className="chats-bar">
             {filteredTickets.reverse().map((ticket) => {
-                const isSelected = selectedChat.id === ticket.id;
                 return (
                     <ChatItem
                         key={ticket.id}
                         ticket={ticket}
-                        isSelected={isSelected}
-                        selectedChat={selectedChat}
                         onClick={() => setSelectedChat({id:ticket.id})}
                     />
                 )
