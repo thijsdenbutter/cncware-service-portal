@@ -1,28 +1,27 @@
 import './ControlBar.css'
 import {NavLink} from "react-router-dom";
-import {useContext, useEffect, useRef, useState} from "react";
+import {useContext} from "react";
 import Divider from "../divider/Divider.jsx";
-import ButtonStart from "../buttons/button-start/ButtonStart.jsx";
-import ButtonStop from "../buttons/button-stop/ButtonStop.jsx";
 import Timer from "../timer/Timer.jsx";
-import ButtonRegister from "../buttons/button-register/ButtonRegister.jsx";
 import FilterCompanyName from "../filters/filter-company-name/FilterCompanyName.jsx";
 import FilterStatus from "../filters/filter-status/FilterStatus.jsx";
-import Button from "../buttons/button/Button.jsx";
+import Button from "../button/Button.jsx";
 import {AuthContext} from "../../context/AuthContext.jsx";
+import {TimerContext} from "../../context/TimerContext.jsx";
 
 function ControlBar() {
-    const [isRunning, setIsRunning] = useState(false);
-    const intervalRef = useRef(null);
 
-    const {user, isAuthenticated} = useContext(AuthContext)
+    const {
+        user,
+        isAuthenticated
+    } = useContext(AuthContext);
 
-    useEffect(() => {
-        const interval = intervalRef.current;
-        return () => {
-            clearInterval(interval);
-        };
-    }, []);
+    const {
+        startTimer,
+        pauseTimer,
+        registerTimer
+    } = useContext(TimerContext);
+
 
     return (
         <div className="control-bar-outer-container">
@@ -43,9 +42,9 @@ function ControlBar() {
                     <>
                         <Divider direction="vertical"/>
                         <Timer/>
-                        <ButtonRegister intervalRef={intervalRef} setIsRunning={setIsRunning} isRunning={isRunning}/>
-                        <ButtonStop setIsRunning={setIsRunning} intervalRef={intervalRef}/>
-                        <ButtonStart/>
+                        <Button onClick={registerTimer} styling="default">Registreer</Button>
+                        <Button onClick={pauseTimer} styling="default">Pauzeer</Button>
+                        <Button onClick={startTimer} styling="default">Start</Button>
                         <Divider direction="vertical"/>
                     </>
                 }

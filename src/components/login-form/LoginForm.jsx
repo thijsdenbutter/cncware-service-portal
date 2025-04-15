@@ -1,6 +1,6 @@
 import './LoginForm.css'
 import Input from "../inputs/input/Input.jsx";
-import Button from "../../components/buttons/button/Button.jsx";
+import Button from "../button/Button.jsx";
 import {useForm} from "react-hook-form";
 import {useContext, useState} from "react";
 import {AuthContext} from "../../context/AuthContext.jsx";

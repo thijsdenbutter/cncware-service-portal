@@ -1,5 +1,5 @@
 import './ChatCreateNewChatForm.css'
-import Button from "../../buttons/button/Button.jsx";
+import Button from "../../button/Button.jsx";
 import InputTextArea from "../../inputs/input-text-area/InputTextArea.jsx";
 import Input from "../../inputs/input/Input.jsx";
 import {useForm} from "react-hook-form";

@@ -1,4 +1,4 @@
-import {createContext, useRef, useState} from "react";
+import {createContext, useEffect, useRef, useState} from "react";
 
 
 export const TimerContext = createContext({});
@@ -10,6 +10,10 @@ export function TimerProvider({ children }) {
 
     const intervalRef = useRef(null);
 
+    useEffect(() => {
+        return () => clearInterval(intervalRef.current);
+    }, []);
+
     function startTimer() {
         if (intervalRef.current !== null) return;
 
@@ -20,12 +24,20 @@ export function TimerProvider({ children }) {
         setIsRunning(true);
     }
 
+    function pauseTimer() {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+        setIsRunning(false);
+    }
+
+
+
     return (
         <TimerContext.Provider
             value={{
                 seconds,
                 startTimer,
-                setSeconds,
+                pauseTimer,
                 selectedChat,
                 setSelectedChat
             }}
