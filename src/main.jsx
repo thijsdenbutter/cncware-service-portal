@@ -5,14 +5,17 @@ import {BrowserRouter as Router} from "react-router-dom";
 import {FilterProvider} from "./context/FilterContext.jsx";
 import {AuthProvider} from "./context/AuthContext.jsx";
 import {TeamleaderProvider} from "./context/TeamleaderContext.jsx";
+import {TimerProvider} from "./context/TimerContext.jsx";
 
 createRoot(document.getElementById('root')).render(
     <TeamleaderProvider>
         <AuthProvider>
             <Router>
-                <FilterProvider>
-                    <App/>
-                </FilterProvider>
+                <TimerProvider>
+                    <FilterProvider>
+                        <App/>
+                    </FilterProvider>
+                </TimerProvider>
             </Router>
         </AuthProvider>
     </TeamleaderProvider>
