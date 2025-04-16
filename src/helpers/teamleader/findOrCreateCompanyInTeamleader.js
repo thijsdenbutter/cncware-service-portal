@@ -1,27 +1,9 @@
-import axios from "axios";
+import {fetchCompanies} from "./fetchCompanies.js";
+import {createNewCompany} from "./createNewCompany.js";
 
 export async function findOrCreateCompanyInTeamleader(companyName, email, token) {
     try {
-        const response = await axios.post(
-            "https://api.focus.teamleader.eu/companies.list",
-            {
-                filter: {
-                    term: companyName,
-                },
-                page: {
-                    size: 50,
-                    number: 1,
-                },
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-
-        const companies = response.data.data;
+        const companies = await fetchCompanies(token, companyName)
 
         const match = companies.find(
             (c) => c.name?.toLowerCase() === companyName.toLowerCase()
@@ -31,27 +13,9 @@ export async function findOrCreateCompanyInTeamleader(companyName, email, token)
             return match.id;
         }
 
+        const createResponse = await createNewCompany(token, companyName, email);
 
-        const createResponse = await axios.post(
-            "https://api.focus.teamleader.eu/companies.add",
-            {
-                name: companyName,
-                emails: [
-                    {
-                        type: "primary",
-                        email,
-                    },
-                ],
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-
-        return createResponse.data.data.id;
+        return createResponse.id;
 
     } catch (err) {
         console.error("❌ Fout bij koppelen met Teamleader:", err);

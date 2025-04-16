@@ -3,7 +3,7 @@ import axios from "axios";
 export async function registerTimeTracking({userId, ticketId, startedAt, duration, token}) {
     if (!token || !userId) throw new Error("Geen geldig token of userId");
 
-    const res = await axios.post(
+    const response = await axios.post(
         "https://api.focus.teamleader.eu/timeTracking.add",
         {
             subject: {
@@ -22,5 +22,5 @@ export async function registerTimeTracking({userId, ticketId, startedAt, duratio
         }
     );
 
-    return res.data.data;
+    return response.data.data;
 }
