@@ -1,6 +1,6 @@
 import './ChatNewMessage.css'
 import {useState} from "react";
-import Button from "../../buttons/button/Button.jsx";
+import Button from "../../button/Button.jsx";
 
 function ChatNewMessage({onSend}) {
     const [message, setMessage] = useState("")

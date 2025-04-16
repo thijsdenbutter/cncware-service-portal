@@ -1,7 +1,15 @@
 import './ChatItem.css'
 import ChatMeta from "../chat-meta/ChatMeta.jsx";
+import {useContext} from "react";
+import {TimerContext} from "../../../context/TimerContext.jsx";
 
-function ChatItem({ticket, isSelected, onClick, selectedChat}) {
+function ChatItem({ticket, onClick}) {
+    const {
+        selectedChat
+    } = useContext(TimerContext)
+
+    const isSelected = selectedChat.id === ticket.id;
+
     return (
         <div className={`chat-item ${isSelected ? "selected" : ""}`}
              onClick={onClick}>

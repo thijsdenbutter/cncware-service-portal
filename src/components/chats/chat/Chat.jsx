@@ -6,14 +6,24 @@ import axios from "axios";
 import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
 import {AuthContext} from "../../../context/AuthContext.jsx";
 import formatDateTimeWithOffset from "../../../helpers/formatDateTimeWithOffset.js";
+import {TimerContext} from "../../../context/TimerContext.jsx";
 
-function Chat({ selectedChat, setSelectedChat }) {
+function Chat() {
     const [chatError, setChatError] = useState(null);
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const {getValidTeamleaderAccessToken} = useContext(TeamleaderContext)
-    const {user} = useContext(AuthContext)
+    const {
+        getValidTeamleaderAccessToken
+    } = useContext(TeamleaderContext);
+    const {
+        user
+    } = useContext(AuthContext);
+
+    const {
+        selectedChat,
+        setSelectedChat
+    } = useContext(TimerContext)
 
         async function fetchMessages() {
             setLoading(true);

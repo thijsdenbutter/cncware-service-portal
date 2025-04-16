@@ -1,9 +1,11 @@
+import getCustomFieldIdByName from "./getCustomFieldIdByName.js";
+
 function valueOfCustomField(customFields, customFieldsDefinitions, targetField) {
 
-    const target = customFieldsDefinitions.find(customField => customField.label === targetField);
-    if (!target) return 0;
+    const targetId = getCustomFieldIdByName(customFieldsDefinitions, targetField);
+    if (!targetId) return 0;
 
-    const field = customFields.find(field => field?.definition.id === target.id);
+    const field = customFields.find(field => field?.definition.id === targetId);
     return field?.value ?? 0;
 }
 

@@ -44,7 +44,10 @@ export function TeamleaderProvider({children}) {
         }
     }
 
-    async function fetchTicketStatuses(token) {
+    async function fetchTicketStatuses() {
+
+        const token = await getValidTeamleaderAccessToken();
+
         setIsLoading(true);
         try {
             const statusList = await fetchTicketStatusesFromAPI(token);
@@ -57,7 +60,12 @@ export function TeamleaderProvider({children}) {
         }
     }
 
-    async function fetchCompanyCustomFields(token) {
+    async function fetchCompanyCustomFields() {
+
+        const token = await getValidTeamleaderAccessToken();
+
+        if (!token) return;
+
         setIsLoading(true);
         try {
             const result = await fetchCustomFields(token, "company");

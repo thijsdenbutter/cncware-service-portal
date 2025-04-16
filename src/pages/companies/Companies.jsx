@@ -1,16 +1,22 @@
 import './Companies.css'
 import CostumerTile from "../../components/costumer-tile/CostumerTile.jsx";
 import {useContext, useEffect, useState} from "react";
-import axios from "axios";
 import valueOfCustomField from "../../helpers/valueOfCustomField.js";
 import {TeamleaderContext} from "../../context/TeamleaderContext.jsx";
 import {FilterContext} from "../../context/FilterContext.jsx";
+import {fetchCompanies} from "../../helpers/teamleader/fetchCompanies.js";
+import {fetchCompanyInfo} from "../../helpers/teamleader/fetchCompanyInfo.js";
+import {fetchContactList} from "../../helpers/teamleader/fetchContactList.js";
+import {fetchTicketList} from "../../helpers/teamleader/fetchTicketList.js";
+import {getSupportMinutesForCompanyData} from "../../helpers/getSupportMinutesForCompanyData.js";
 
 function Companies() {
     const [companies, setCompanies] = useState([]);
     const [companyError, setCompanyError] = useState(null);
     const {
         customFieldsCompanies,
+        fetchCompanyCustomFields,
+        fetchTicketStatuses,
         isLoading,
         error: contextError,
         getValidTeamleaderAccessToken
@@ -19,71 +25,21 @@ function Companies() {
         filterData,
     } = useContext(FilterContext)
 
-    async function fetchBaseCompanies(token) {
-        const response = await axios.post(
-            "https://api.focus.teamleader.eu/companies.list",
-            {
-                page: {
-                    size: 50,
-                    number: 1
-                }
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                }
-            }
-        );
-
-        return response.data.data;
-    }
-
     async function enrichCompanyData(company, token) {
         const companyId = company.id;
 
         try {
             const [infoRes, contactRes, ticketsRes] = await Promise.all([
-                axios.post("https://api.focus.teamleader.eu/companies.info", {
-                    id: companyId
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }),
-                axios.post("https://api.focus.teamleader.eu/contacts.list", {
-                    filter: {company_id: companyId}
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                }),
-                axios.post("https://api.focus.teamleader.eu/tickets.list", {
-                    filter: {
-                        relates_to: {
-                            type: "company",
-                            id: companyId
-                        }
-                    }
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json"
-                    }
-                })
+                fetchCompanyInfo(token, companyId),
+                fetchContactList(token, companyId),
+                fetchTicketList(token, companyId)
             ]);
 
-            const fullCompany = infoRes.data.data;
-            const contact = contactRes.data.data || null;
-            const tickets = ticketsRes.data.data;
+            const fullCompany = infoRes;
+            const contact = contactRes || null;
+            const tickets = ticketsRes;
 
-            const supportMinutes = valueOfCustomField(
-                fullCompany.custom_fields,
-                customFieldsCompanies,
-                "Support minuten"
-            );
+            const supportMinutes = getSupportMinutesForCompanyData(fullCompany, customFieldsCompanies);
 
             return {
                 id: companyId,
@@ -107,7 +63,7 @@ function Companies() {
         }
 
         try {
-            const baseCompanies = await fetchBaseCompanies(token);
+            const baseCompanies = await fetchCompanies(token);
             const enriched = await Promise.all(
                 baseCompanies.map(c => enrichCompanyData(c, token))
             );
@@ -119,6 +75,11 @@ function Companies() {
             setCompanyError("❌ Fout bij ophalen bedrijven.");
         }
     }
+
+    useEffect(() => {
+        fetchTicketStatuses();
+        fetchCompanyCustomFields();
+    }, []);
 
     useEffect(() => {
         if (customFieldsCompanies.length > 0) {

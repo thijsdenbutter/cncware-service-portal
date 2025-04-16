@@ -1,27 +1,20 @@
 import './Chats.css'
 import ChatBar from "../../components/chats/chat-bar/ChatBar.jsx";
-import {useEffect, useState} from "react";
 import Chat from "../../components/chats/chat/Chat.jsx";
+import {useContext} from "react";
+import {TimerContext} from "../../context/TimerContext.jsx";
 
 function Chats() {
-    const [selectedChat, setSelectedChat] = useState({
-        id: null,
-        description: null
-    });
 
-    useEffect(() => {console.log(selectedChat)},[selectedChat]);
+    const {
+        selectedChat
+    } = useContext(TimerContext);
 
     return (
         <div className="chats-layout">
-            <ChatBar
-                selectedChat={selectedChat}
-                setSelectedChat={setSelectedChat}
-            />
+            <ChatBar/>
             {selectedChat.id && (
-                <Chat
-                    selectedChat={selectedChat}
-                    setSelectedChat={setSelectedChat}
-                />
+                <Chat/>
             )}
         </div>
     )
