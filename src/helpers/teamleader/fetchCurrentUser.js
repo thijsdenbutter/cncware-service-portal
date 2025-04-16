@@ -1,7 +1,6 @@
 import axios from "axios";
 
-export async function fetchCurrentUserId({token}) {
-    if (!token) return null;
+export async function fetchCurrentUser(token) {
 
     const response = await axios.post(
         "https://api.focus.teamleader.eu/users.me",
@@ -13,7 +12,5 @@ export async function fetchCurrentUserId({token}) {
             },
         }
     );
-
     return response.data.data;
-
 }

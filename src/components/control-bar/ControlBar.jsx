@@ -19,7 +19,7 @@ function ControlBar() {
     const {
         startTimer,
         pauseTimer,
-        registerTimer
+        registerTime
     } = useContext(TimerContext);
 
 
@@ -42,7 +42,7 @@ function ControlBar() {
                     <>
                         <Divider direction="vertical"/>
                         <Timer/>
-                        <Button onClick={registerTimer} styling="default">Registreer</Button>
+                        <Button onClick={registerTime} styling="default">Registreer</Button>
                         <Button onClick={pauseTimer} styling="default">Pauzeer</Button>
                         <Button onClick={startTimer} styling="default">Start</Button>
                         <Divider direction="vertical"/>
