@@ -3,6 +3,11 @@ import {fetchCurrentUser} from "../helpers/teamleader/fetchCurrentUser.js";
 import {TeamleaderContext} from "./TeamleaderContext.jsx";
 import {registerTimeTracking} from "../helpers/teamleader/registerTimeTracking.js";
 import formatDateTimeWithOffset from "../helpers/formatDateTimeWithOffset.js";
+import {fetchCompanyInfo} from "../helpers/teamleader/fetchCompanyInfo.js";
+import {getSupportMinutesForCompanyData} from "../helpers/getSupportMinutesForCompanyData.js";
+import {calculateRemainingSupportMinutes} from "../helpers/calculateRemainingSupportMinutes.js";
+import {updateSupportMinutesForCompany} from "../helpers/teamleader/updateSupportMinutesForCompany.js";
+import getCustomFieldIdByName from "../helpers/getCustomFieldIdByName.js";
 
 
 export const TimerContext = createContext({});
@@ -10,11 +15,12 @@ export const TimerContext = createContext({});
 export function TimerProvider({children}) {
     const [startTime, setStartTime] = useState(null);
     const [seconds, setSeconds] = useState(0);
-    const [isRunning, setIsRunning] = useState(false);
+    const [error, setError] = useState(null);
     const [selectedChat, setSelectedChat] = useState({});
 
     const {
-        getValidTeamleaderAccessToken
+        getValidTeamleaderAccessToken,
+        customFieldsCompanies
     } = useContext(TeamleaderContext);
 
     const intervalRef = useRef(null);
@@ -31,13 +37,11 @@ export function TimerProvider({children}) {
         }, 1000);
 
         setStartTime(formatDateTimeWithOffset());
-        setIsRunning(true);
     }
 
     function pauseTimer() {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
-        setIsRunning(false);
     }
 
     function resetTimer() {
@@ -48,15 +52,16 @@ export function TimerProvider({children}) {
     async function registerTime() {
 
         const token = await getValidTeamleaderAccessToken();
-
         if (!token) throw new Error("Geen geldige token");
 
         try {
             const user = await fetchCurrentUser(token);
-            console.log("user :", user);
 
             const userId = user?.id;
-            if (!userId) throw new Error("Geen geldig user ID gevonden");
+            if (!userId) {
+                setError("❌ Geen geldig user ID gevonden.")
+                throw new Error("Geen geldig user ID gevonden");
+            }
 
             const result = await registerTimeTracking({
                 userId,
@@ -65,6 +70,22 @@ export function TimerProvider({children}) {
                 duration: seconds,
                 token
             })
+
+            if (!selectedChat.company) {
+                setError("❌ Tijd registreren is niet mogelijk zonder gekoppeld bedrijf.")
+                throw new Error("Tijd registreren is niet mogelijk zonder gekoppeld bedrijf.");
+            }
+
+            const companyData = await fetchCompanyInfo(token, selectedChat.company.id);
+            const currentSupportMinutes = getSupportMinutesForCompanyData(companyData, customFieldsCompanies);
+            const newSupportMinutes = calculateRemainingSupportMinutes(currentSupportMinutes, seconds);
+
+            console.log("customFieldsCompanies: ", customFieldsCompanies);
+            const customFieldId = getCustomFieldIdByName(customFieldsCompanies, "Support minuten");
+            console.log("customFieldId: ",customFieldId)
+
+            await updateSupportMinutesForCompany({token, companyId: selectedChat.company.id, customFieldId, newValue: newSupportMinutes});
+
 
             console.log("✅ Tijd geregistreerd:", result);
             resetTimer();
@@ -83,7 +104,8 @@ export function TimerProvider({children}) {
                 pauseTimer,
                 registerTime,
                 selectedChat,
-                setSelectedChat
+                setSelectedChat,
+                error
             }}
         >
             {children}

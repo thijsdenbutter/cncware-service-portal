@@ -8,6 +8,7 @@ import {fetchCompanies} from "../../helpers/teamleader/fetchCompanies.js";
 import {fetchCompanyInfo} from "../../helpers/teamleader/fetchCompanyInfo.js";
 import {fetchContactList} from "../../helpers/teamleader/fetchContactList.js";
 import {fetchTicketList} from "../../helpers/teamleader/fetchTicketList.js";
+import {getSupportMinutesForCompanyData} from "../../helpers/getSupportMinutesForCompanyData.js";
 
 function Companies() {
     const [companies, setCompanies] = useState([]);
@@ -38,11 +39,7 @@ function Companies() {
             const contact = contactRes || null;
             const tickets = ticketsRes;
 
-            const supportMinutes = valueOfCustomField(
-                fullCompany.custom_fields,
-                customFieldsCompanies,
-                "Support minuten"
-            );
+            const supportMinutes = getSupportMinutesForCompanyData(fullCompany, customFieldsCompanies);
 
             return {
                 id: companyId,

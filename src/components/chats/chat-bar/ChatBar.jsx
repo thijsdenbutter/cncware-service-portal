@@ -127,7 +127,10 @@ function ChatBar() {
                     <ChatItem
                         key={ticket.id}
                         ticket={ticket}
-                        onClick={() => setSelectedChat({id:ticket.id})}
+                        onClick={() => setSelectedChat({
+                            id:ticket.id,
+                            company:ticket?.company ? ticket.company : null
+                        })}
                     />
                 )
             })}
