@@ -86,7 +86,11 @@ function Chat() {
     return (
         <div className="chat-layout">
             {chatError && <p>{chatError}</p>}
-            {loading && <p>Berichten worden geladen...</p>}
+            {loading &&
+                <div className="chat-messages">
+                    <p>Berichten worden geladen...</p>
+                </div>
+            }
 
             {!loading && !chatError && (
                 <div className="chat-messages">
