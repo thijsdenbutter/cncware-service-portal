@@ -1,8 +1,10 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import axios from "axios";
 import {findOrCreateCompanyInTeamleader} from "../helpers/teamleader/findOrCreateCompanyInTeamleader.js";
 import {TeamleaderContext} from "./TeamleaderContext.jsx";
+import {updateSupportMinutesForCompany} from "../helpers/teamleader/updateSupportMinutesForCompany.js";
+import getCustomFieldIdByName from "../helpers/getCustomFieldIdByName.js";
 
 export const AuthContext = createContext({});
 
@@ -13,7 +15,11 @@ export function AuthProvider({children}) {
         status: "pending",
     });
 
-    const { getValidTeamleaderAccessToken, fetchTicketStatuses, fetchCompanyCustomFields } = useContext(TeamleaderContext)
+    const {
+        getValidTeamleaderAccessToken,
+        fetchTicketStatuses,
+        fetchCompanyCustomFields,
+    } = useContext(TeamleaderContext);
 
     function isTokenExpired(token) {
         try {
@@ -106,11 +112,16 @@ export function AuthProvider({children}) {
         }
     }
 
-    async function register({ email, password, company, navigate }) {
+    async function register({email, password, company, navigate}) {
         try {
+            const teamleaderToken = await getValidTeamleaderAccessToken();
+            const fetchedCompanyId = await findOrCreateCompanyInTeamleader({
+                companyName: company,
+                email,
+                token: teamleaderToken
+            });
 
-        const teamleaderToken = await getValidTeamleaderAccessToken();
-        const companyId = await findOrCreateCompanyInTeamleader(company, email, teamleaderToken);
+            const companyId = fetchedCompanyId.id;
 
             const isAdmin = email.endsWith("@cncware.nl");
 
@@ -126,7 +137,7 @@ export function AuthProvider({children}) {
                 payload,
             );
 
-            await login({ email, password, navigate });
+            await login({email, password, navigate});
 
             const userToken = localStorage.getItem("user_token");
 
@@ -149,6 +160,16 @@ export function AuthProvider({children}) {
                 status: "done",
             });
 
+            if (fetchedCompanyId.type === "new") {
+                const customFieldsCompanies = await fetchCompanyCustomFields();
+                const customFieldId = getCustomFieldIdByName(customFieldsCompanies, "Support minuten");
+                await updateSupportMinutesForCompany({
+                    token: teamleaderToken,
+                    companyId: companyId,
+                    customFieldId,
+                    newValue: 100
+                });
+            }
         } catch (err) {
             console.error("❌ Registratie mislukt:", err);
             setAuthError("❌ Registratie mislukt");

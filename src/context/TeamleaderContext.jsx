@@ -3,7 +3,6 @@ import axios from "axios";
 import {fetchCustomFields} from "../helpers/teamleader/fetchCustomFields.js";
 import { fetchTicketStatuses as fetchTicketStatusesFromAPI } from "../helpers/teamleader/fetchTicketStatuses.js";
 
-
 export const TeamleaderContext = createContext({});
 
 export function TeamleaderProvider({children}) {
@@ -63,7 +62,6 @@ export function TeamleaderProvider({children}) {
     async function fetchCompanyCustomFields() {
 
         const token = await getValidTeamleaderAccessToken();
-
         if (!token) return;
 
         setIsLoading(true);
@@ -71,6 +69,7 @@ export function TeamleaderProvider({children}) {
             const result = await fetchCustomFields(token, "company");
             if (result) {
                 setCustomFieldsCompanies(result);
+                return result;
             }
         } catch (error) {
             console.error("❌ Fout bij ophalen customfields:", error);
