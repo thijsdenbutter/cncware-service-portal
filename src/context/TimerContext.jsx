@@ -30,6 +30,8 @@ export function TimerProvider({children}) {
     }, []);
 
     function startTimer() {
+        setSuccess(null);
+        setError(null);
         if (intervalRef.current !== null) return;
 
         intervalRef.current = setInterval(() => {
