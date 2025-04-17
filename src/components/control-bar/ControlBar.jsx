@@ -20,7 +20,8 @@ function ControlBar() {
         startTimer,
         pauseTimer,
         registerTime,
-        error
+        error,
+        success
     } = useContext(TimerContext);
 
 
@@ -36,9 +37,9 @@ function ControlBar() {
                 }
             </div>
             <div className="control-bar-inner-container">
-                <NavLink to="/login">{!user ? "Inloggen" : "Uitloggen"}</NavLink>
+                <Button styling="default" to="/login">{!user ? "Inloggen" : "Uitloggen"}</Button>
                 {isAuthenticated &&
-                    <NavLink to="/nieuwe-chat">Nieuwe chat</NavLink>}
+                    <Button styling="default" to="/nieuwe-chat">Nieuwe chat</Button>}
                 {user?.role === "admin" &&
                     <>
                         <Divider direction="vertical"/>
@@ -48,6 +49,7 @@ function ControlBar() {
                         <Button onClick={startTimer} styling="default">Start</Button>
                         <Divider direction="vertical"/>
                         {error && <p>{error}</p>}
+                        {success && <p>{success}</p>}
                     </>
                 }
             </div>

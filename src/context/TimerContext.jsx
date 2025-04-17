@@ -15,6 +15,7 @@ export function TimerProvider({children}) {
     const [startTime, setStartTime] = useState(null);
     const [seconds, setSeconds] = useState(0);
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
     const [selectedChat, setSelectedChat] = useState({});
 
     const {
@@ -50,6 +51,7 @@ export function TimerProvider({children}) {
 
     async function registerTime() {
         setError(null);
+        setStartTime(null);
 
         const token = await getValidTeamleaderAccessToken();
 
@@ -96,6 +98,7 @@ export function TimerProvider({children}) {
             });
 
             resetTimer();
+            setSuccess("✅ Tijd succesvol geregistreerd");
 
         } catch (err) {
             console.error("❌ Tijdregistratie mislukt:", err);
@@ -112,7 +115,8 @@ export function TimerProvider({children}) {
                 registerTime,
                 selectedChat,
                 setSelectedChat,
-                error
+                error,
+                success
             }}
         >
             {children}

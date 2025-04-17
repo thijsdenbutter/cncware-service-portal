@@ -25,7 +25,11 @@ function ChatNewMessage({onSend}) {
                    value={message}
                    onChange={(e) => setMessage(e.target.value)}
             />
-            <Button type="submit" styling="default">
+            <Button
+                type="submit"
+                styling="default"
+                variant="compact"
+            >
                 Verzenden
             </Button>
         </form>

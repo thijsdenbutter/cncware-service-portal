@@ -1,24 +1,36 @@
 import './NavBar.css';
-import { NavLink } from "react-router-dom";
 import {useContext} from "react";
 import {AuthContext} from "../../context/AuthContext.jsx";
+import Button from "../button/Button.jsx";
 
 function NavBar() {
 
-    const { user } = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
 
     return (
         <nav className="nav-bar">
             <ul>
                 {user?.role === "admin" &&
+                    <li>
+                        <Button
+                            styling="default"
+                            to="/bedrijven"
+                            variant="fullwidth"
+                        >Klanten</Button>
+                    </li>}
                 <li>
-                    <NavLink to="/bedrijven">Klanten</NavLink>
-                </li>}
-                <li>
-                    <NavLink to="/chats">Chats</NavLink>
+                    <Button
+                        styling="default"
+                        to="/chats"
+                        variant="fullwidth"
+                    >Chats</Button>
                 </li>
                 <li>
-                    <NavLink to="/products">Producten</NavLink>
+                    <Button
+                        styling="default"
+                        to="/products"
+                        variant="fullwidth"
+                    >Producten</Button>
                 </li>
             </ul>
         </nav>
