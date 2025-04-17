@@ -1,8 +1,6 @@
 import axios from "axios";
 
 export async function updateSupportMinutesForCompany({token, companyId, customFieldId, newValue}) {
-    console.log(customFieldId);
-
     const response = await axios.post(
         "https://api.focus.teamleader.eu/companies.update",
         {

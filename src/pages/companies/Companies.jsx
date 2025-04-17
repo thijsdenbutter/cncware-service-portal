@@ -86,8 +86,6 @@ function Companies() {
         }
     }, [customFieldsCompanies]);
 
-    useEffect(() => console.log(companies), [companies]);
-
     if (isLoading) {
         return <p>Gegevens worden geladen...</p>;
     }
