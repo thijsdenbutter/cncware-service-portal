@@ -1,4 +1,4 @@
-import './InfoRow.css'
+import './InfoRow.css';
 
 function InfoRow({label, value}) {
     return (
@@ -6,7 +6,7 @@ function InfoRow({label, value}) {
             <p>{label}</p>
             <p className="info-value">{value}</p>
         </div>
-    )
+    );
 }
 
 export default InfoRow;

@@ -11,6 +11,6 @@ export async function fetchCustomFields(token, contextFilter) {
                 "Content-Type": "application/json"
             }
         }
-    )
+    );
     return (response.data.data);
 }

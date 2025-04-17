@@ -1,4 +1,4 @@
-import './StatBlock.css'
+import './StatBlock.css';
 
 function StatBlock({title, children}) {
     return (
@@ -10,7 +10,7 @@ function StatBlock({title, children}) {
                 </div>
             </>
         </div>
-    )
+    );
 }
 
 export default StatBlock;

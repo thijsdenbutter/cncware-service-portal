@@ -1,4 +1,4 @@
-import './Button.css'
+import './Button.css';
 
 function Button({children, styling, onClick}) {
     return (
@@ -8,6 +8,6 @@ function Button({children, styling, onClick}) {
         >
             {children}
         </button>
-    )
+    );
 }
-export default Button
+export default Button;

@@ -1,4 +1,4 @@
-import './Home.css'
+import './Home.css';
 
 function Home() {
     return (
@@ -7,7 +7,7 @@ function Home() {
                 CNCware service portaal
             </h1>
         </div>
-    )
+    );
 }
 
-export default Home
+export default Home;

@@ -59,7 +59,7 @@ export function TimerProvider({children}) {
 
             const userId = user?.id;
             if (!userId) {
-                setError("❌ Geen geldig user ID gevonden.")
+                setError("❌ Geen geldig user ID gevonden.");
                 throw new Error("Geen geldig user ID gevonden");
             }
 
@@ -69,10 +69,10 @@ export function TimerProvider({children}) {
                 startedAt: startTime,
                 duration: seconds,
                 token
-            })
+            });
 
             if (!selectedChat.company) {
-                setError("❌ Tijd registreren is niet mogelijk zonder gekoppeld bedrijf.")
+                setError("❌ Tijd registreren is niet mogelijk zonder gekoppeld bedrijf.");
                 throw new Error("Tijd registreren is niet mogelijk zonder gekoppeld bedrijf.");
             }
 
@@ -82,7 +82,7 @@ export function TimerProvider({children}) {
 
             console.log("customFieldsCompanies: ", customFieldsCompanies);
             const customFieldId = getCustomFieldIdByName(customFieldsCompanies, "Support minuten");
-            console.log("customFieldId: ",customFieldId)
+            console.log("customFieldId: ",customFieldId);
 
             await updateSupportMinutesForCompany({token, companyId: selectedChat.company.id, customFieldId, newValue: newSupportMinutes});
 
@@ -92,7 +92,6 @@ export function TimerProvider({children}) {
 
         } catch (err) {
             console.error("❌ Tijdregistratie mislukt:", err);
-            throw err;
         }
     }
 

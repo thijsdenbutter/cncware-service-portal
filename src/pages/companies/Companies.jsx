@@ -1,13 +1,12 @@
-import './Companies.css'
+import './Companies.css';
 import CostumerTile from "../../components/costumer-tile/CostumerTile.jsx";
 import {useContext, useEffect, useState} from "react";
-import valueOfCustomField from "../../helpers/valueOfCustomField.js";
 import {TeamleaderContext} from "../../context/TeamleaderContext.jsx";
 import {FilterContext} from "../../context/FilterContext.jsx";
 import {fetchCompanies} from "../../helpers/teamleader/fetchCompanies.js";
 import {fetchCompanyInfo} from "../../helpers/teamleader/fetchCompanyInfo.js";
 import {fetchContactList} from "../../helpers/teamleader/fetchContactList.js";
-import {fetchTicketList} from "../../helpers/teamleader/fetchTicketList.js";
+import {fetchTickets} from "../../helpers/teamleader/fetchTickets.js";
 import {getSupportMinutesForCompanyData} from "../../helpers/getSupportMinutesForCompanyData.js";
 
 function Companies() {
@@ -20,10 +19,10 @@ function Companies() {
         isLoading,
         error: contextError,
         getValidTeamleaderAccessToken
-    } = useContext(TeamleaderContext)
+    } = useContext(TeamleaderContext);
     const {
         filterData,
-    } = useContext(FilterContext)
+    } = useContext(FilterContext);
 
     async function enrichCompanyData(company, token) {
         const companyId = company.id;
@@ -32,7 +31,7 @@ function Companies() {
             const [infoRes, contactRes, ticketsRes] = await Promise.all([
                 fetchCompanyInfo(token, companyId),
                 fetchContactList(token, companyId),
-                fetchTicketList(token, companyId)
+                fetchTickets(token, companyId)
             ]);
 
             const fullCompany = infoRes;
@@ -55,7 +54,7 @@ function Companies() {
     }
 
     async function fetchAndBuildCompanies() {
-        const token = await getValidTeamleaderAccessToken()
+        const token = await getValidTeamleaderAccessToken();
 
         if (!token) {
             setCompanyError("Geen toegangstoken gevonden.");
@@ -104,7 +103,6 @@ function Companies() {
     );
 
     return (
-
         <div className="home-layout">
             {filteredCompanies.map((company) => {
                 return (
@@ -115,10 +113,10 @@ function Companies() {
                         supportMinutes={company.supportMinutes}
                         tickets={company.tickets}
                     />
-                )
+                );
             })}
         </div>
-    )
+    );
 }
 
-export default Companies
+export default Companies;

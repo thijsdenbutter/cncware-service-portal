@@ -40,8 +40,6 @@ export function AuthProvider({children}) {
                     }
                 );
 
-                console.log("user info response: ", response);
-
                 const isAdmin = response.data.email.endsWith("@cncware.nl");
 
                 setAuthState({
@@ -71,11 +69,7 @@ export function AuthProvider({children}) {
 
     }, []);
 
-    useEffect(() => {
-        console.log(authState)
-    }, [authState]);
-
-    async function login({email, password}, navigate) {
+    async function login({email, password, navigate}) {
         setAuthError(null);
         try {
             const response = await axios.post("https://frontend-educational-backend.herokuapp.com/api/auth/signin", {
@@ -84,8 +78,6 @@ export function AuthProvider({children}) {
             });
 
             localStorage.setItem("user_token", response.data.accessToken);
-
-            console.log("inlog response: ", response.data);
 
             const isAdmin = response.data.email.endsWith("@cncware.nl");
 
@@ -106,15 +98,15 @@ export function AuthProvider({children}) {
                 await fetchCompanyCustomFields(teamleaderToken);
             }
 
-            navigate("/")
+            navigate("/");
 
         } catch (err) {
             console.error("❌ Login mislukt:", err);
-            setAuthError("❌ Login mislukt")
+            setAuthError("❌ Login mislukt");
         }
     }
 
-    async function register({ email, password, company }, navigate) {
+    async function register({ email, password, company, navigate }) {
         try {
 
         const teamleaderToken = await getValidTeamleaderAccessToken();
@@ -127,18 +119,14 @@ export function AuthProvider({children}) {
                 email,
                 password,
                 role: isAdmin ? ["admin"] : ["user"],
-            }
-            console.log(payload)
+            };
 
-            const response = await axios.post(
+            await axios.post(
                 "https://frontend-educational-backend.herokuapp.com/api/auth/signup",
                 payload,
-
             );
 
-            console.log("✅ Backend response:", response);
-
-            await login({ email, password }, navigate);
+            await login({ email, password, navigate });
 
             const userToken = localStorage.getItem("user_token");
 
@@ -149,7 +137,6 @@ export function AuthProvider({children}) {
                     Authorization: `Bearer ${userToken}`,
                 }
             });
-            console.log(responsePutInfo);
 
             setAuthState({
                 user: {

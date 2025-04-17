@@ -1,9 +1,9 @@
-import './ChatNewMessage.css'
+import './ChatNewMessage.css';
 import {useState} from "react";
 import Button from "../../button/Button.jsx";
 
 function ChatNewMessage({onSend}) {
-    const [message, setMessage] = useState("")
+    const [message, setMessage] = useState("");
 
     function handleSend(e) {
         e.preventDefault();
@@ -12,7 +12,6 @@ function ChatNewMessage({onSend}) {
 
         if (onSend) {
             onSend(trimmed);
-            console.log(trimmed);
         }
 
         setMessage("");
@@ -30,7 +29,7 @@ function ChatNewMessage({onSend}) {
                 Verzenden
             </Button>
         </form>
-    )
+    );
 }
 
 export default ChatNewMessage;

@@ -1,4 +1,4 @@
-import './ChatItem.css'
+import './ChatItem.css';
 import ChatMeta from "../chat-meta/ChatMeta.jsx";
 import {useContext} from "react";
 import {TimerContext} from "../../../context/TimerContext.jsx";
@@ -6,7 +6,7 @@ import {TimerContext} from "../../../context/TimerContext.jsx";
 function ChatItem({ticket, onClick}) {
     const {
         selectedChat
-    } = useContext(TimerContext)
+    } = useContext(TimerContext);
 
     const isSelected = selectedChat.id === ticket.id;
 
@@ -33,7 +33,7 @@ function ChatItem({ticket, onClick}) {
                     value={selectedChat.description}
                     multiline={isSelected}/>}
         </div>
-    )
+    );
 }
 
 export default ChatItem;

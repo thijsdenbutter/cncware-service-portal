@@ -3,7 +3,7 @@ import {createNewCompany} from "./createNewCompany.js";
 
 export async function findOrCreateCompanyInTeamleader(companyName, email, token) {
     try {
-        const companies = await fetchCompanies(token, companyName)
+        const companies = await fetchCompanies(token, companyName);
 
         const match = companies.find(
             (c) => c.name?.toLowerCase() === companyName.toLowerCase()

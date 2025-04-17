@@ -1,4 +1,4 @@
-import './CostumerTile.css'
+import './CostumerTile.css';
 import InfoRow from "../info-row/InfoRow.jsx";
 import Divider from "../divider/Divider.jsx";
 import StatBlock from "../stats/stat-block/StatBlock.jsx";
@@ -8,8 +8,9 @@ import {useContext} from "react";
 import {TeamleaderContext} from "../../context/TeamleaderContext.jsx";
 
 function CostumerTile({name, contact, supportMinutes, tickets}) {
-
-    const {ticketStatuses} = useContext(TeamleaderContext)
+    const {
+        ticketStatuses
+    } = useContext(TeamleaderContext);
 
     return (
         <div className="costumer-tile">
@@ -24,7 +25,7 @@ function CostumerTile({name, contact, supportMinutes, tickets}) {
                 <Stat label="Minuten" value={supportMinutes}/>
             </StatBlock>
         </div>
-    )
+    );
 }
 
-export default CostumerTile
+export default CostumerTile;

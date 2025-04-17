@@ -1,4 +1,4 @@
-import './ControlBar.css'
+import './ControlBar.css';
 import {NavLink} from "react-router-dom";
 import {useContext} from "react";
 import Divider from "../divider/Divider.jsx";
@@ -52,7 +52,7 @@ function ControlBar() {
                 }
             </div>
         </div>
-    )
+    );
 }
 
 export default ControlBar;

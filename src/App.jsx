@@ -1,5 +1,5 @@
-import './App.css'
-import {Routes, Route} from 'react-router-dom'
+import './App.css';
+import {Routes, Route} from 'react-router-dom';
 import Home from "./pages/home/home.jsx";
 import Companies from "./pages/companies/Companies.jsx";
 import Chats from "./pages/chats/Chats.jsx";
@@ -33,7 +33,7 @@ function App() {
             </div>
         </div>
 
-    )
+    );
 }
 
-export default App
+export default App;

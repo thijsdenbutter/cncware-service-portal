@@ -1,11 +1,11 @@
-import './NavBar.css'
+import './NavBar.css';
 import { NavLink } from "react-router-dom";
 import {useContext} from "react";
 import {AuthContext} from "../../context/AuthContext.jsx";
 
 function NavBar() {
 
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
 
     return (
         <nav className="nav-bar">
@@ -22,7 +22,7 @@ function NavBar() {
                 </li>
             </ul>
         </nav>
-    )
+    );
 }
 
-export default NavBar
+export default NavBar;
