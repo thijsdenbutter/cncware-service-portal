@@ -1,71 +1,66 @@
-import './ChatCreateNewChatForm.css'
+import './ChatCreateNewChatForm.css';
 import Button from "../../button/Button.jsx";
 import InputTextArea from "../../inputs/input-text-area/InputTextArea.jsx";
 import Input from "../../inputs/input/Input.jsx";
 import {useForm} from "react-hook-form";
-import axios from "axios";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {AuthContext} from "../../../context/AuthContext.jsx";
 import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
+import {createNewTicket} from "../../../helpers/teamleader/createNewTicket.js";
 
 function ChatCreateNewChatForm() {
+    const [submitError, setSubmitError] = useState(null);
+    const [submitSuccess, setSubmitSuccess] = useState(null);
+
     const {
         register,
         handleSubmit,
         formState: { errors }
     } = useForm({ mode: "onChange" });
+
     const {
         user
     } = useContext(AuthContext);
+
     const {
         getValidTeamleaderAccessToken,
         ticketStatuses
     } = useContext(TeamleaderContext);
 
-    async function onCreateChat({ subject, customerId, ticketStatusId, description, accessToken }) {
-        try {
-            const response = await axios.post(
-                'https://api.focus.teamleader.eu/tickets.create',
-                {
-                    subject,
-                    customer: {
-                        type: 'company',
-                        id: customerId,
-                    },
-                    ticket_status_id: ticketStatusId,
-                    description,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
-
-            console.log('Ticket succesvol aangemaakt:', response.data);
-        } catch (error) {
-            console.error('Fout bij het aanmaken van ticket:', error.response?.data || error.message);
-        }
-    }
-
     const onSubmit = async (data) => {
-        const fullDescription = `Order: ${data.orderNumber}\nOrderregel: ${data.orderLine}\n\n${data.description}`;
-        const accessToken = await getValidTeamleaderAccessToken();
+        setSubmitError(null);
+        setSubmitSuccess(false);
 
-        const ticketStatusId = ticketStatuses.find(
-            (status) => status.name === "open")?.id;
-        console.log(ticketStatuses);
-        const customerId = user.info;
+        try {
+            const fullDescription = `Order: ${data.orderNumber}\nOrderregel: ${data.orderLine}\n\n${data.description}`;
+            const accessToken = await getValidTeamleaderAccessToken();
 
-        onCreateChat({
-            subject: data.subject,
-            description: fullDescription,
-            accessToken,
-            ticketStatusId,
-            customerId
-        });
+            const ticketStatusId = ticketStatuses.find(
+                (status) => status.name === "open")?.id;
+
+            if (!ticketStatusId) throw new Error("Ticket status 'open' niet gevonden");
+
+            const customerId = user.info;
+
+            await createNewTicket({
+                subject: data.subject,
+                description: fullDescription,
+                accessToken,
+                ticketStatusId,
+                customerId
+            });
+
+            setSubmitSuccess(true);
+
+        } catch (error) {
+            console.error('❌ Fout bij het aanmaken van ticket:', error);
+            setSubmitError(error.message || "Er is iets misgegaan.");
+        }
     };
+
+    if (submitSuccess){
+    return (<p className="form-success">✅ Ticket succesvol aangemaakt!</p>);
+    }
 
     return (
         <div className="new-chat-form-wrapper">
@@ -108,6 +103,8 @@ function ChatCreateNewChatForm() {
                     />
                     {errors.description && <p className="form-error">{errors.description.message}</p>}
                 </label>
+
+                {submitError && <p className="form-error">{submitError}</p>}
 
                 <Button type="submit" styling="default">
                     Verstuur
