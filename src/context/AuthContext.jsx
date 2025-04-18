@@ -96,8 +96,6 @@ export function AuthProvider({children}) {
 
             const isAdmin = userData.email.endsWith("@cncware.nl");
 
-            console.log("response userData: ", userData);
-
             setAuthState({
                 user: {
                     username: userData.username,
