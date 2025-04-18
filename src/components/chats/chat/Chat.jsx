@@ -67,6 +67,8 @@ function Chat() {
             const token = await getValidTeamleaderAccessToken();
             if (!token) throw new Error("Geen toegangstoken gevonden.");
 
+            console.log("user:", user);
+
             await createNewTicketMessage({
                 token,
                 ticketId: selectedChat.id,

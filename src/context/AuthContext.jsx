@@ -83,17 +83,28 @@ export function AuthProvider({children}) {
                 password,
             });
 
-            localStorage.setItem("user_token", response.data.accessToken);
+            const userToken = response.data.accessToken;
+            localStorage.setItem("user_token", userToken);
 
-            const isAdmin = response.data.email.endsWith("@cncware.nl");
+            const userInfoRes = await axios.get("https://frontend-educational-backend.herokuapp.com/api/user", {
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                },
+            });
+
+            const userData = userInfoRes.data;
+
+            const isAdmin = userData.email.endsWith("@cncware.nl");
+
+            console.log("response userData: ", userData);
 
             setAuthState({
                 user: {
-                    username: response.data.username,
-                    email: response.data.email,
-                    id: response.data.id,
+                    username: userData.username,
+                    email: userData.email,
+                    id: userData.id,
                     role: isAdmin ? "admin" : "user",
-                    info: response.data.info,
+                    info: userData.info,
                 },
                 status: "done",
             });
