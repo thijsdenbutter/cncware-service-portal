@@ -1,8 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
 
-html {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
     font-size: 16px;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 12px;
+    }
 }
 
 :root {
@@ -53,7 +72,6 @@ body {
     font-family: var(--font-ui), sans-serif;
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-regular);
-    line-height: 1.5;
 }
 
 ul {

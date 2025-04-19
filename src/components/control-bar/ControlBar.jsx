@@ -1,5 +1,4 @@
 import './ControlBar.css';
-import {NavLink} from "react-router-dom";
 import {useContext} from "react";
 import Divider from "../divider/Divider.jsx";
 import Timer from "../timer/Timer.jsx";
@@ -27,7 +26,7 @@ function ControlBar() {
 
     return (
         <div className="control-bar-outer-container">
-            <div className="control-bar-inner-container">
+            <div className="control-bar-section filters">
                 {isAuthenticated &&
                     <>
                         {user?.role === "admin" &&
@@ -36,22 +35,26 @@ function ControlBar() {
                     </>
                 }
             </div>
-            <div className="control-bar-inner-container">
-                <Button styling="default" to="/login">{!user ? "Inloggen" : "Uitloggen"}</Button>
-                {isAuthenticated &&
-                    <Button styling="default" to="/nieuwe-chat">Nieuwe chat</Button>}
-                {user?.role === "admin" &&
-                    <>
-                        <Divider direction="vertical"/>
-                        <Timer/>
-                        <Button onClick={registerTime} styling="default">Registreer</Button>
-                        <Button onClick={pauseTimer} styling="default">Pauzeer</Button>
-                        <Button onClick={startTimer} styling="default">Start</Button>
-                        <Divider direction="vertical"/>
-                        {error && <p>{error}</p>}
-                        {success && <p>{success}</p>}
-                    </>
-                }
+            <div className="control-bar-section right-side">
+                <div className="control-bar-section timer">
+                    {user?.role === "admin" &&
+                        <>
+                            <Divider direction="vertical"/>
+                            <Button onClick={startTimer} styling="default">Start</Button>
+                            <Button onClick={pauseTimer} styling="default">Pauzeer</Button>
+                            <Button onClick={registerTime} styling="default">Registreer</Button>
+                            <Timer/>
+                            <Divider direction="vertical"/>
+                            {error && <p>{error}</p>}
+                            {success && <p>{success}</p>}
+                        </>
+                    }
+                </div>
+                <div className="control-bar-section auth">
+                    {isAuthenticated &&
+                        <Button styling="default" to="/nieuwe-chat">Nieuwe chat</Button>}
+                    <Button styling="default" to="/login">{!user ? "Inloggen" : "Uitloggen"}</Button>
+                </div>
             </div>
         </div>
     );
