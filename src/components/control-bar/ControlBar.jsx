@@ -7,6 +7,7 @@ import FilterStatus from "../filters/filter-status/FilterStatus.jsx";
 import Button from "../button/Button.jsx";
 import {AuthContext} from "../../context/AuthContext.jsx";
 import {TimerContext} from "../../context/TimerContext.jsx";
+import useDeviceType from "../../hooks/useDeviceType.js";
 
 function ControlBar() {
 
@@ -22,6 +23,9 @@ function ControlBar() {
         error,
         success
     } = useContext(TimerContext);
+
+    const device = useDeviceType();
+
 
 
     return (
@@ -50,11 +54,16 @@ function ControlBar() {
                         </>
                     }
                 </div>
-                <div className="control-bar-section auth">
-                    {isAuthenticated &&
-                        <Button styling="default" to="/nieuwe-chat">Nieuwe chat</Button>}
-                    <Button styling="default" to="/login">{!user ? "Inloggen" : "Uitloggen"}</Button>
-                </div>
+                {device === "desktop" &&
+                    <div className="control-bar-section auth">
+                        {isAuthenticated &&
+                            <Button styling="default" to="/nieuwe-chat">Nieuwe chat</Button>}
+                        <Button styling="default" to="/login">{!user ? "Inloggen" : "Uitloggen"}</Button>
+                    </div>}
+                {device !== "desktop"  && !user &&
+                    <div className="control-bar-section auth">
+                        <Button styling="default" to="/login">{!user ? "Inloggen" : "Uitloggen"}</Button>
+                    </div>}
             </div>
         </div>
     );

@@ -50,3 +50,39 @@ a.button-default:active::after {
     flex-grow: 0;
     padding: 0.75rem 1rem;
 }
+
+.button-variant-rotated {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    transform-origin: center;
+    width: auto;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    text-align: center;
+    line-height: normal;
+}
+
+.button-variant-rotated::after,
+a.button-variant-rotated::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 6px; /* visuele rechterkant na rotatie */
+    width: 2px;
+    height: 100%;
+    background-color: white;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: center;
+}
+
+.button-variant-rotated:hover::after,
+a.button-variant-rotated:hover::after,
+.button-variant-rotated:focus::after,
+a.button-variant-rotated:focus::after,
+.button-variant-rotated:active::after,
+a.button-variant-rotated:active::after {
+    opacity: 1;
+    transform: scaleY(0.8);
+}
