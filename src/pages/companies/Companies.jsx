@@ -101,18 +101,20 @@ function Companies() {
     );
 
     return (
-        <div className="home-layout">
-            {filteredCompanies.map((company) => {
-                return (
-                    <CostumerTile
-                        key={company.id}
-                        name={company.name}
-                        contact={company.contact}
-                        supportMinutes={company.supportMinutes}
-                        tickets={company.tickets}
-                    />
-                );
-            })}
+        <div className="companies-page-scroll-wrapper">
+            <div className="companies-layout">
+                {filteredCompanies.map((company) => {
+                    return (
+                        <CostumerTile
+                            key={company.id}
+                            name={company.name}
+                            contact={company.contact}
+                            supportMinutes={company.supportMinutes}
+                            tickets={company.tickets}
+                        />
+                    );
+                })}
+            </div>
         </div>
     );
 }
