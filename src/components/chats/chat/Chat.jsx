@@ -8,6 +8,7 @@ import {TimerContext} from "../../../context/TimerContext.jsx";
 import {fetchTicketMessages} from "../../../helpers/teamleader/fetchTicketMessages.js";
 import {fetchTicketInfo} from "../../../helpers/teamleader/fetchTicketInfo.js";
 import {createNewTicketMessage} from "../../../helpers/teamleader/createNewTicketMessage.js";
+import {useParams} from "react-router-dom";
 
 function Chat() {
     const [chatError, setError] = useState(null);
@@ -27,9 +28,12 @@ function Chat() {
         setSelectedChat
     } = useContext(TimerContext);
 
+    const { chatId } = useParams();
+    const activeChatId = selectedChat?.id || chatId;
+
     useEffect(() => {
         async function fetchChatData() {
-            if (!selectedChat?.id) return;
+            if (!activeChatId) return;
 
             setLoading(true);
             setError(null);
@@ -39,8 +43,8 @@ function Chat() {
                 if (!token) throw new Error("Geen toegangstoken gevonden.");
 
                 const [fetchedMessages, ticketInfo] = await Promise.all([
-                    fetchTicketMessages({ticketId: selectedChat.id, token}),
-                    fetchTicketInfo({ticketId: selectedChat.id, token})
+                    fetchTicketMessages({ticketId: activeChatId, token}),
+                    fetchTicketInfo({ticketId: activeChatId, token})
                 ]);
 
                 setMessages(fetchedMessages);
@@ -59,7 +63,7 @@ function Chat() {
         }
 
         fetchChatData();
-    }, [selectedChat?.id]);
+    }, [activeChatId]);
 
     async function handleSendMessage(body) {
         setError(null);

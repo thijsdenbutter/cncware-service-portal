@@ -27,6 +27,7 @@ function App() {
                         <Route path="/bedrijven"
                                element={isAuthenticated && user.role === "admin" ? <Companies/> : <Login/>}/>
                         <Route path="/chats" element={isAuthenticated ? <Chats/> : <Login/>}/>
+                        <Route path="/chats/*" element={isAuthenticated ? <Chats/> : <Login/>} />
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/nieuwe-chat" element={isAuthenticated ? <NewChat/> : <Login/>}/>
                         <Route path="/teamleader-auth" element={<TeamleaderRedirection/>}/>

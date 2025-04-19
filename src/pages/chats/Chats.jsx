@@ -4,6 +4,8 @@ import Chat from "../../components/chats/chat/Chat.jsx";
 import {useContext, useEffect} from "react";
 import {TimerContext} from "../../context/TimerContext.jsx";
 import {TeamleaderContext} from "../../context/TeamleaderContext.jsx";
+import useDeviceType from "../../hooks/useDeviceType.js";
+import {Route, Routes} from "react-router-dom";
 
 function Chats() {
 
@@ -15,16 +17,33 @@ function Chats() {
         fetchTicketStatuses
     } = useContext(TeamleaderContext);
 
+    const device = useDeviceType();
+
     useEffect(() => {
         fetchTicketStatuses();
-    },[]);
+    }, []);
 
     return (
         <div className="chats-layout">
-            <ChatBar/>
-            {selectedChat.id && (
-                <Chat/>
-            )}
+            <Routes>
+                {device === "mobile" ? (
+                    <>
+                        <Route path="/" element={<ChatBar/>}/>
+                        <Route path=":chatId" element={<Chat/>}/>
+                    </>
+                ) : (
+                    <Route
+                        path="*"
+                        element={
+                            <>
+                                <ChatBar/>
+                            {selectedChat.id && (
+                                <Chat/>)}
+                            </>
+                        }
+                    />
+                )}
+            </Routes>
         </div>
     );
 }

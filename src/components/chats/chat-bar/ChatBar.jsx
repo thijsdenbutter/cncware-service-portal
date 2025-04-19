@@ -8,6 +8,8 @@ import {TimerContext} from "../../../context/TimerContext.jsx";
 import {fetchTickets} from "../../../helpers/teamleader/fetchTickets.js";
 import {fetchContactInfo} from "../../../helpers/teamleader/fetchContactInfo.js";
 import {fetchCompanyInfo} from "../../../helpers/teamleader/fetchCompanyInfo.js";
+import {useNavigate} from "react-router-dom";
+import useDeviceType from "../../../hooks/useDeviceType.js";
 
 function ChatBar() {
     const [chatsError, setChatsError] = useState(null);
@@ -28,6 +30,9 @@ function ChatBar() {
     const {
         setSelectedChat
     } = useContext(TimerContext);
+
+    const navigate = useNavigate();
+    const device = useDeviceType();
 
     async function fetchAndBuildTickets() {
         const token = await getValidTeamleaderAccessToken();
@@ -133,10 +138,16 @@ function ChatBar() {
                     <ChatItem
                         key={ticket.id}
                         ticket={ticket}
-                        onClick={() => setSelectedChat({
-                            id:ticket.id,
-                            company:ticket?.company ? ticket.company : null
-                        })}
+                        onClick={() => {
+                            setSelectedChat({
+                                id: ticket.id,
+                                company: ticket?.company ? ticket.company : null
+                            });
+
+                            if (device === "mobile") {
+                                navigate(`/chats/${ticket.id}`);
+                            }
+                        }}
                     />
                 );
             })}
