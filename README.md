@@ -13,13 +13,15 @@ Een webapplicatie voor het beheren van tickets en het registreren van tijd, geko
 - Node.js (v18+ aanbevolen)
 - NPM (meegeleverd met Node)
 - Teamleader OAuth-client (client_id + client_secret)
-- `.env` bestand voor de backend met de volgende inhoud:
+- `.env` bestand in de map teamleader-backend/ met de volgende inhoud:
 
 ```env
-CLIENT_ID=je_teamleader_client_id
-CLIENT_SECRET=je_teamleader_client_secret
+CLIENT_ID=a5cdf7c2de14f56a752a9d219c653edb
+CLIENT_SECRET=7ee2f1d0b3568620541fd4923eab1e68
 REDIRECT_URI=http://localhost:3001/auth/callback
 ```
+
+Let op: Zorg dat dit .env bestand zich bevindt in de root van de teamleader-backend map.
 
 ---
 
