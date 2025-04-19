@@ -1,4 +1,4 @@
-import './InputSelect.css'
+import './InputSelect.css';
 
 function InputSelect({ value, onChange, options, placeholder }) {
     return (

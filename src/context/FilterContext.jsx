@@ -1,10 +1,10 @@
 import {createContext, useState} from "react";
 
-export const FilterContext = createContext({})
+export const FilterContext = createContext({});
 
 export function FilterProvider({children}) {
-    const [filterCompanyName, setFilterCompanyName] = useState("")
-    const [filterStatus, setFilterStatus] = useState("")
+    const [filterCompanyName, setFilterCompanyName] = useState("");
+    const [filterStatus, setFilterStatus] = useState("");
 
     const filterData = (data, getCompanyName, getStatus) => {
         return data.filter((item) => {
@@ -22,8 +22,8 @@ export function FilterProvider({children}) {
                         : status === filterStatus);
 
             return matchCompanyName && matchStatus;
-        })
-    }
+        });
+    };
 
     return (
         <FilterContext.Provider value={{
@@ -35,5 +35,5 @@ export function FilterProvider({children}) {
         }}>
             {children}
         </FilterContext.Provider>
-    )
+    );
 }

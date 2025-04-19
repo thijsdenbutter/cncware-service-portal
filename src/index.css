@@ -1,8 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
 
-html {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
     font-size: 16px;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 12px;
+    }
 }
 
 :root {
@@ -53,44 +72,9 @@ body {
     font-family: var(--font-ui), sans-serif;
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-regular);
-    line-height: 1.5;
 }
 
 ul {
     list-style: none;
 }
 
-a {
-    position: relative;
-    color: var(--text-main);
-    text-decoration: none;
-    font-weight: var(--font-weight-medium);
-    transition: color 0.3s ease;
-    display: block;
-    padding: 0.75rem 1rem;
-    background-color: var(--primary-default);
-    border-radius: 0.5rem;
-}
-
-a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 6px;
-    width: 100%;
-    height: 2px;
-    background-color: white;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    opacity: 0;
-    transform: scaleX(0);
-}
-
-a:hover::after {
-    opacity: 1;
-    transform: scaleX(80%);
-}
-
-a.active::after {
-    opacity: 1;
-    transform: scaleX(80%);
-}

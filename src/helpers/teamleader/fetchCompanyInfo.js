@@ -8,6 +8,6 @@ export async function fetchCompanyInfo(token, companyId) {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json"
         }
-    })
+    });
     return response.data.data;
 }

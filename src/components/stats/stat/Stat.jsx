@@ -1,4 +1,4 @@
-import './Stat.css'
+import './Stat.css';
 
 function Stat({ label, value }) {
     return (
@@ -6,7 +6,7 @@ function Stat({ label, value }) {
         <p>{label}</p>
         <p className="stat-value">{value}</p>
     </div>
-    )
+    );
 }
 
 export default Stat;

@@ -8,6 +8,6 @@ export async function fetchContactList(token, companyId) {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json"
         }
-    })
+    });
     return response.data.data;
 }

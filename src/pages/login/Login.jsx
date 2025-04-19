@@ -19,7 +19,7 @@ function Login() {
         <div className="login-form-wrapper">
             <LoginForm/>
         </div>
-    )
+    );
 }
 
-export default Login
+export default Login;

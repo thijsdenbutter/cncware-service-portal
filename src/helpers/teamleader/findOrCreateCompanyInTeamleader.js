@@ -1,21 +1,21 @@
 import {fetchCompanies} from "./fetchCompanies.js";
 import {createNewCompany} from "./createNewCompany.js";
 
-export async function findOrCreateCompanyInTeamleader(companyName, email, token) {
+export async function findOrCreateCompanyInTeamleader({companyName, email, token}) {
     try {
-        const companies = await fetchCompanies(token, companyName)
+        const companies = await fetchCompanies(token, companyName);
 
         const match = companies.find(
             (c) => c.name?.toLowerCase() === companyName.toLowerCase()
         );
 
         if (match) {
-            return match.id;
+            return {id: match.id, type: "existed"} ;
         }
 
         const createResponse = await createNewCompany(token, companyName, email);
 
-        return createResponse.id;
+        return {id: createResponse.id, type: "new"};
 
     } catch (err) {
         console.error("❌ Fout bij koppelen met Teamleader:", err);

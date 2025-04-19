@@ -1,5 +1,5 @@
-import './App.css'
-import {Routes, Route} from 'react-router-dom'
+import './App.css';
+import {Routes, Route} from 'react-router-dom';
 import Home from "./pages/home/home.jsx";
 import Companies from "./pages/companies/Companies.jsx";
 import Chats from "./pages/chats/Chats.jsx";
@@ -14,26 +14,30 @@ import {AuthContext} from "./context/AuthContext.jsx";
 
 function App() {
 
-    const { isAuthenticated, user } = useContext(AuthContext);
+    const {isAuthenticated, user} = useContext(AuthContext);
 
     return (
         <div className="app-outer-container">
             <ControlBar/>
             <div className="app-inner-container">
-                {isAuthenticated && <NavBar/>}
-                <Routes>
-                    <Route path="/" element={<Home/>}/>
-                    <Route path="/bedrijven" element={isAuthenticated && user.role === "admin" ? <Companies/> : <Login/>}/>
-                    <Route path="/chats" element={isAuthenticated ? <Chats/> : <Login/>}/>
-                    <Route path="/login" element={<Login/>}/>
-                    <Route path="/nieuwe-chat" element={isAuthenticated ? <NewChat/> : <Login/>}/>
-                    <Route path="/teamleader-auth" element={<TeamleaderRedirection/>}/>
-                    <Route path="*" element={<PageNotFound/>}/>
-                </Routes>
+                    {isAuthenticated && <NavBar/>}
+                <div className="app-page-container">
+                    <Routes>
+                        <Route path="/" element={<Home/>}/>
+                        <Route path="/bedrijven"
+                               element={isAuthenticated && user.role === "admin" ? <Companies/> : <Login/>}/>
+                        <Route path="/chats" element={isAuthenticated ? <Chats/> : <Login/>}/>
+                        <Route path="/chats/*" element={isAuthenticated ? <Chats/> : <Login/>} />
+                        <Route path="/login" element={<Login/>}/>
+                        <Route path="/nieuwe-chat" element={isAuthenticated ? <NewChat/> : <Login/>}/>
+                        <Route path="/teamleader-auth" element={<TeamleaderRedirection/>}/>
+                        <Route path="*" element={<PageNotFound/>}/>
+                    </Routes>
+                </div>
             </div>
         </div>
 
-    )
+    );
 }
 
-export default App
+export default App;

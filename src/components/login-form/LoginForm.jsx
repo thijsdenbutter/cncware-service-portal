@@ -1,4 +1,4 @@
-import './LoginForm.css'
+import './LoginForm.css';
 import Input from "../inputs/input/Input.jsx";
 import Button from "../button/Button.jsx";
 import {useForm} from "react-hook-form";
@@ -35,12 +35,14 @@ function LoginForm() {
                 email: data.email,
                 password: data.password,
                 company: data.company,
-            }, navigate);
+                navigate,
+            });
         } else {
             onLogin({
                 email: data.email,
-                password: data.password
-            }, navigate);
+                password: data.password,
+                navigate,
+            });
         }
     };
 
@@ -58,7 +60,7 @@ function LoginForm() {
                     Uitloggen
                 </Button>
             </div>
-        )
+        );
     }
 
     return (
@@ -139,8 +141,8 @@ function LoginForm() {
                     <>
                         Al een account?{" "}
                         <span onClick={() => {
-                            setIsRegistering(false)
-                            setAuthError(null)
+                            setIsRegistering(false);
+                            setAuthError(null);
                         }}>Log in</span>
 
                     </>
@@ -148,8 +150,8 @@ function LoginForm() {
                     <>
                         Nog geen account?{" "}
                         <span onClick={() => {
-                            setIsRegistering(true)
-                            setAuthError(null)
+                            setIsRegistering(true);
+                            setAuthError(null);
                         }}>Registreer</span>
                     </>
                 )}

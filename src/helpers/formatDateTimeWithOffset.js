@@ -15,4 +15,4 @@ function formatDateTimeWithOffset(date = new Date()) {
 
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${offsetSign}${offsetHours}:${offsetMinutes}`;
 }
-export default formatDateTimeWithOffset
+export default formatDateTimeWithOffset;

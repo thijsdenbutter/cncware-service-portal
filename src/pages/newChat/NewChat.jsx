@@ -1,4 +1,4 @@
-import './NewChat.css'
+import './NewChat.css';
 import ChatCreateNewChatForm from "../../components/chats/chat-create-new-chat-form/ChatCreateNewChatForm.jsx";
 
 function NewChat() {
@@ -6,6 +6,6 @@ function NewChat() {
         <div className="new-chat-form-wrapper">
             <ChatCreateNewChatForm/>
         </div>
-    )
+    );
 }
-export default NewChat
+export default NewChat;

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function fetchTicketList(token, companyId) {
+export async function fetchTickets(token, companyId) {
     const payload = {};
 
     if (companyId) {
@@ -23,6 +23,5 @@ export async function fetchTicketList(token, companyId) {
         }
     );
 
-    console.log(response.data.data);
     return response.data.data;
 }

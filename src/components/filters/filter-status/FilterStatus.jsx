@@ -4,13 +4,18 @@ import InputSelect from "../../inputs/input-select/InputSelect.jsx";
 import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
 
 function FilterStatus() {
-    const {filterStatus, setFilterStatus} = useContext(FilterContext)
-    const { ticketStatuses } = useContext(TeamleaderContext)
+    const {
+        filterStatus,
+        setFilterStatus
+    } = useContext(FilterContext);
+    const {
+        ticketStatuses
+    } = useContext(TeamleaderContext);
 
     const options = ticketStatuses ? ticketStatuses.map((ticketStatus) => ({
         label: ticketStatus.name,
         value: ticketStatus.id
-    })) : ""
+    })) : "";
 
     return (
         <InputSelect
@@ -19,7 +24,7 @@ function FilterStatus() {
             options={options}
             placeholder="Filter op status"
         />
-    )
+    );
 }
 
 export default FilterStatus;

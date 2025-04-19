@@ -1,8 +1,10 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import axios from "axios";
 import {findOrCreateCompanyInTeamleader} from "../helpers/teamleader/findOrCreateCompanyInTeamleader.js";
 import {TeamleaderContext} from "./TeamleaderContext.jsx";
+import {updateSupportMinutesForCompany} from "../helpers/teamleader/updateSupportMinutesForCompany.js";
+import getCustomFieldIdByName from "../helpers/getCustomFieldIdByName.js";
 
 export const AuthContext = createContext({});
 
@@ -13,7 +15,11 @@ export function AuthProvider({children}) {
         status: "pending",
     });
 
-    const { getValidTeamleaderAccessToken, fetchTicketStatuses, fetchCompanyCustomFields } = useContext(TeamleaderContext)
+    const {
+        getValidTeamleaderAccessToken,
+        fetchTicketStatuses,
+        fetchCompanyCustomFields,
+    } = useContext(TeamleaderContext);
 
     function isTokenExpired(token) {
         try {
@@ -39,8 +45,6 @@ export function AuthProvider({children}) {
                         },
                     }
                 );
-
-                console.log("user info response: ", response);
 
                 const isAdmin = response.data.email.endsWith("@cncware.nl");
 
@@ -71,11 +75,7 @@ export function AuthProvider({children}) {
 
     }, []);
 
-    useEffect(() => {
-        console.log(authState)
-    }, [authState]);
-
-    async function login({email, password}, navigate) {
+    async function login({email, password, navigate}) {
         setAuthError(null);
         try {
             const response = await axios.post("https://frontend-educational-backend.herokuapp.com/api/auth/signin", {
@@ -83,19 +83,26 @@ export function AuthProvider({children}) {
                 password,
             });
 
-            localStorage.setItem("user_token", response.data.accessToken);
+            const userToken = response.data.accessToken;
+            localStorage.setItem("user_token", userToken);
 
-            console.log("inlog response: ", response.data);
+            const userInfoRes = await axios.get("https://frontend-educational-backend.herokuapp.com/api/user", {
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                },
+            });
 
-            const isAdmin = response.data.email.endsWith("@cncware.nl");
+            const userData = userInfoRes.data;
+
+            const isAdmin = userData.email.endsWith("@cncware.nl");
 
             setAuthState({
                 user: {
-                    username: response.data.username,
-                    email: response.data.email,
-                    id: response.data.id,
+                    username: userData.username,
+                    email: userData.email,
+                    id: userData.id,
                     role: isAdmin ? "admin" : "user",
-                    info: response.data.info,
+                    info: userData.info,
                 },
                 status: "done",
             });
@@ -106,19 +113,24 @@ export function AuthProvider({children}) {
                 await fetchCompanyCustomFields(teamleaderToken);
             }
 
-            navigate("/")
+            navigate("/");
 
         } catch (err) {
             console.error("❌ Login mislukt:", err);
-            setAuthError("❌ Login mislukt")
+            setAuthError("❌ Login mislukt");
         }
     }
 
-    async function register({ email, password, company }, navigate) {
+    async function register({email, password, company, navigate}) {
         try {
+            const teamleaderToken = await getValidTeamleaderAccessToken();
+            const fetchedCompanyId = await findOrCreateCompanyInTeamleader({
+                companyName: company,
+                email,
+                token: teamleaderToken
+            });
 
-        const teamleaderToken = await getValidTeamleaderAccessToken();
-        const companyId = await findOrCreateCompanyInTeamleader(company, email, teamleaderToken);
+            const companyId = fetchedCompanyId.id;
 
             const isAdmin = email.endsWith("@cncware.nl");
 
@@ -127,18 +139,14 @@ export function AuthProvider({children}) {
                 email,
                 password,
                 role: isAdmin ? ["admin"] : ["user"],
-            }
-            console.log(payload)
+            };
 
-            const response = await axios.post(
+            await axios.post(
                 "https://frontend-educational-backend.herokuapp.com/api/auth/signup",
                 payload,
-
             );
 
-            console.log("✅ Backend response:", response);
-
-            await login({ email, password }, navigate);
+            await login({email, password, navigate});
 
             const userToken = localStorage.getItem("user_token");
 
@@ -149,7 +157,6 @@ export function AuthProvider({children}) {
                     Authorization: `Bearer ${userToken}`,
                 }
             });
-            console.log(responsePutInfo);
 
             setAuthState({
                 user: {
@@ -162,6 +169,16 @@ export function AuthProvider({children}) {
                 status: "done",
             });
 
+            if (fetchedCompanyId.type === "new") {
+                const customFieldsCompanies = await fetchCompanyCustomFields();
+                const customFieldId = getCustomFieldIdByName(customFieldsCompanies, "Support minuten");
+                await updateSupportMinutesForCompany({
+                    token: teamleaderToken,
+                    companyId: companyId,
+                    customFieldId,
+                    newValue: 100
+                });
+            }
         } catch (err) {
             console.error("❌ Registratie mislukt:", err);
             setAuthError("❌ Registratie mislukt");

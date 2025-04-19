@@ -1,32 +1,41 @@
-import './ChatBar.css'
+import './ChatBar.css';
 import ChatItem from "../chat-item/ChatItem.jsx";
 import {useContext, useEffect, useState} from "react";
 import {FilterContext} from "../../../context/FilterContext.jsx";
 import {TeamleaderContext} from "../../../context/TeamleaderContext.jsx";
 import {AuthContext} from "../../../context/AuthContext.jsx";
 import {TimerContext} from "../../../context/TimerContext.jsx";
-import {fetchTicketList} from "../../../helpers/teamleader/fetchTicketList.js";
+import {fetchTickets} from "../../../helpers/teamleader/fetchTickets.js";
 import {fetchContactInfo} from "../../../helpers/teamleader/fetchContactInfo.js";
 import {fetchCompanyInfo} from "../../../helpers/teamleader/fetchCompanyInfo.js";
+import {useNavigate} from "react-router-dom";
+import useDeviceType from "../../../hooks/useDeviceType.js";
 
 function ChatBar() {
     const [chatsError, setChatsError] = useState(null);
     const [tickets, setTickets] = useState([]);
+
     const {
         filterData,
-    } = useContext(FilterContext)
+    } = useContext(FilterContext);
+
     const {
         getValidTeamleaderAccessToken
     } = useContext(TeamleaderContext);
+
     const {
         user
-    } = useContext(AuthContext)
+    } = useContext(AuthContext);
+
     const {
         setSelectedChat
-    } = useContext(TimerContext)
+    } = useContext(TimerContext);
+
+    const navigate = useNavigate();
+    const device = useDeviceType();
 
     async function fetchAndBuildTickets() {
-        const token = await getValidTeamleaderAccessToken()
+        const token = await getValidTeamleaderAccessToken();
 
         if (!token) {
             setChatsError("Geen toegangstoken gevonden.");
@@ -38,11 +47,13 @@ function ChatBar() {
             const isAdmin = user?.role === "admin";
             if (!isAdmin) filter = user?.info;
 
-            const baseTickets = await fetchTicketList(token, filter);
+            const baseTickets = await fetchTickets(token, filter);
 
             const enrichedTickets = await Promise.all(
                 baseTickets.map(async (ticket) => {
+
                     const customer = ticket.customer;
+
                     let customerInfo = null;
                     let companyInfo = {id: null, name: "Onbekend bedrijf"};
 
@@ -108,7 +119,7 @@ function ChatBar() {
 
     useEffect(() => {
         fetchAndBuildTickets();
-    }, [])
+    }, []);
 
     const filteredTickets = filterData(
         tickets,
@@ -118,7 +129,7 @@ function ChatBar() {
 
     if (chatsError) return (
         <p>{chatsError}</p>
-    )
+    );
 
     return (
         <div className="chats-bar">
@@ -127,15 +138,21 @@ function ChatBar() {
                     <ChatItem
                         key={ticket.id}
                         ticket={ticket}
-                        onClick={() => setSelectedChat({
-                            id:ticket.id,
-                            company:ticket?.company ? ticket.company : null
-                        })}
+                        onClick={() => {
+                            setSelectedChat({
+                                id: ticket.id,
+                                company: ticket?.company ? ticket.company : null
+                            });
+
+                            if (device === "mobile") {
+                                navigate(`/chats/${ticket.id}`);
+                            }
+                        }}
                     />
-                )
+                );
             })}
         </div>
-    )
+    );
 }
 
 export default ChatBar;

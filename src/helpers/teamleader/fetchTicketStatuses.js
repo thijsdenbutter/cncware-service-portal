@@ -9,11 +9,11 @@ export async function fetchTicketStatuses(token) {
                 "Content-Type": "application/json"
             }
         }
-    )
+    );
     const listOfStatuses = statusesResponse.data.data;
 
     return listOfStatuses.map(status => ({
         id: status.id,
         name: status.status === "custom" ? status.label : status.status,
-    }))
+    }));
 }

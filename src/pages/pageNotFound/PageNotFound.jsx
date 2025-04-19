@@ -1,8 +1,9 @@
+import './PageNotFound.css';
 function PageNotFound() {
     return (
-        <div>
+        <div className="page-not-found">
             PageNotFound
         </div>
-    )
+    );
 }
-export default PageNotFound
+export default PageNotFound;

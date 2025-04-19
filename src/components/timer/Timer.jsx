@@ -1,4 +1,4 @@
-import './Timer.css'
+import './Timer.css';
 import {useContext} from "react";
 import {TimerContext} from "../../context/TimerContext.jsx";
 
@@ -17,7 +17,7 @@ function Timer() {
 
     return (
         <span className="timer-display">{formatTime()}</span>
-    )
+    );
 }
 
-export default Timer
+export default Timer;

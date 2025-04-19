@@ -7,19 +7,3 @@
     background-color: var(--bg-sidebar);
     border-top-left-radius: 0.1rem;
 }
-
-.chat-input {
-    flex: 1;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--input-border);
-    border-radius: 0.5rem;
-    background-color: var(--input-bg);
-    color: var(--text-main);
-    font-size: var(--font-size-base);
-    outline: none;
-}
-
-.chat-input:focus {
-    border-color: var(--input-focus);
-    box-shadow: 0 0 0 2px rgba(0, 198, 198, 0.3);
-}
